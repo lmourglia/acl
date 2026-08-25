@@ -1,0 +1,1947 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex,nofollow">
+<title>ACL · Red de socios</title>
+
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#EFEDE7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141210" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ACL">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<link rel="icon" href="./favicon.png" sizes="32x32">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<style id="app-css">
+:root{
+  --ground:#EFEDE7; --surface:#FFFFFF; --surface2:#F7F5F1; --line:#DCD7CE;
+  --ink:#1B1815; --ink2:#4A443C; --muted:#7C736A;
+  --accent:#B4531F; --accent-soft:#F6E4D8; --accent-ink:#7A3512;
+  --critical:#96161C; --critical-soft:#F7DEDE;
+  --good:#16694A; --good-soft:#DCEDE4;
+  --warn:#A8760B; --warn-soft:#FBEDCF;
+  --cold:#1D5A78; --cold-soft:#DCEAF2;
+  --radius:14px; --tap:48px;
+  --shadow:0 1px 2px rgba(27,24,21,.06),0 6px 18px rgba(27,24,21,.06);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#141210; --surface:#211E1A; --surface2:#2A2622; --line:#3A342E;
+  --ink:#F2EFE9; --ink2:#C4BCB1; --muted:#948A7E;
+  --accent:#E07B3E; --accent-soft:#3C2517; --accent-ink:#F0A672;
+  --critical:#E8615F; --critical-soft:#3E1A1A;
+  --good:#5FBF8F; --good-soft:#17301F;
+  --warn:#E0AA3C; --warn-soft:#332714;
+  --cold:#7FB6D4; --cold-soft:#15272F;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 6px 18px rgba(0,0,0,.3);
+}}
+:root[data-theme="dark"]{
+  --ground:#141210; --surface:#211E1A; --surface2:#2A2622; --line:#3A342E;
+  --ink:#F2EFE9; --ink2:#C4BCB1; --muted:#948A7E;
+  --accent:#E07B3E; --accent-soft:#3C2517; --accent-ink:#F0A672;
+  --critical:#E8615F; --critical-soft:#3E1A1A;
+  --good:#5FBF8F; --good-soft:#17301F;
+  --warn:#E0AA3C; --warn-soft:#332714;
+  --cold:#7FB6D4; --cold-soft:#15272F;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 6px 18px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:Archivo,"Helvetica Neue",Arial,sans-serif;
+  font-size:16px; line-height:1.45; -webkit-text-size-adjust:100%;
+  -webkit-font-smoothing:antialiased; overscroll-behavior-y:none;
+}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer;border:none;background:none;padding:0}
+:focus-visible{outline:2.5px solid var(--accent);outline-offset:2px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.shell{max-width:600px;margin:0 auto;min-height:100dvh;background:var(--ground);
+  display:flex;flex-direction:column;position:relative}
+
+/* ---------- header ---------- */
+.top{position:sticky;top:0;z-index:30;background:var(--ground);
+  border-bottom:1px solid var(--line);
+  padding:calc(10px + env(safe-area-inset-top)) 16px 8px}
+.top-row{display:flex;align-items:baseline;gap:10px}
+.brand{font-family:"Bricolage Grotesque",Archivo,sans-serif;font-weight:800;
+  font-size:19px;letter-spacing:-.02em;line-height:1}
+.brand small{font-weight:600;font-size:12px;color:var(--muted);margin-left:7px;letter-spacing:0}
+.saved{margin-left:auto;font-size:11px;font-weight:600;letter-spacing:.02em}
+.saved.ok{color:var(--muted)} .saved.busy{color:var(--warn)} .saved.err{color:var(--critical)}
+.bar{margin-top:8px;height:6px;border-radius:999px;background:var(--line);overflow:hidden;display:flex}
+.bar i{display:block;height:100%}
+.bar .b-ok{background:var(--good)} .bar .b-go{background:var(--accent)}
+.barlab{margin-top:5px;display:flex;gap:12px;font-size:11.5px;color:var(--muted);
+  font-weight:600;font-variant-numeric:tabular-nums}
+.barlab em{font-style:normal;color:var(--ink2)}
+
+/* ---------- main ---------- */
+main{flex:1;padding:14px 12px calc(86px + env(safe-area-inset-bottom))}
+.sec{margin:0 0 20px}
+.sec-h{display:flex;align-items:center;gap:8px;margin:0 4px 9px;
+  font-family:"Bricolage Grotesque",Archivo,sans-serif;font-weight:700;
+  font-size:12.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.sec-h .cnt{font-family:Archivo,sans-serif;letter-spacing:0;background:var(--line);
+  color:var(--ink2);border-radius:999px;padding:1px 8px;font-size:11.5px}
+.sec.urg .sec-h{color:var(--critical)} .sec.urg .sec-h .cnt{background:var(--critical-soft);color:var(--critical)}
+.sec.hoy .sec-h{color:var(--warn)} .sec.hoy .sec-h .cnt{background:var(--warn-soft);color:var(--warn)}
+
+.list{display:flex;flex-direction:column;gap:8px}
+.card{width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);padding:12px 13px 12px 15px;position:relative;overflow:hidden;
+  box-shadow:var(--shadow);display:block;min-height:var(--tap);transition:transform .12s ease}
+.card:active{transform:scale(.985)}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--line)}
+.card.s-urg::before{background:var(--critical)}
+.card.s-hoy::before{background:var(--warn)}
+.card.s-new::before{background:var(--accent)}
+.card.s-ok::before{background:var(--good)}
+.card.s-zzz::before{background:var(--critical)}
+.c-top{display:flex;align-items:flex-start;gap:8px}
+.c-name{font-weight:700;font-size:15.5px;line-height:1.25;letter-spacing:-.01em;flex:1;text-wrap:balance}
+.c-sub{margin-top:3px;font-size:13px;color:var(--muted);line-height:1.3}
+.c-chips{margin-top:7px;display:flex;flex-wrap:wrap;align-items:center;gap:5px}
+.c-next{margin-top:8px;display:flex;align-items:center;gap:7px;font-size:13px;color:var(--ink2);line-height:1.3}
+.c-next .dot{width:5px;height:5px;border-radius:99px;background:var(--accent);flex:none}
+.c-when{margin-top:6px;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
+.c-when.urg{color:var(--critical)} .c-when.hoy{color:var(--warn)} .c-when.fut{color:var(--muted)}
+
+.chip{display:inline-flex;align-items:center;gap:4px;border-radius:999px;
+  padding:2px 8px;font-size:11px;font-weight:700;letter-spacing:.03em;white-space:nowrap;flex:none}
+.t-Caliente{background:var(--accent);color:#fff}
+.t-Tibio{background:var(--warn-soft);color:var(--warn);box-shadow:inset 0 0 0 1px var(--warn)}
+.t-Frio{background:var(--cold-soft);color:var(--cold);box-shadow:inset 0 0 0 1px var(--cold)}
+.t-none{background:transparent;color:var(--muted);box-shadow:inset 0 0 0 1px var(--line)}
+.e-chip{font-size:11px;line-height:1.5;font-weight:700;padding:2px 8px;border-radius:999px;flex:none;
+  background:var(--surface2);color:var(--ink2);white-space:nowrap;
+  box-shadow:inset 0 0 0 1px var(--line)}
+.e-chip.e-act{background:var(--good-soft);color:var(--good);box-shadow:none}
+.e-chip.e-zzz{background:var(--critical-soft);color:var(--critical);box-shadow:none}
+.e-chip.e-alta{background:var(--accent-soft);color:var(--accent-ink);box-shadow:none}
+.e-chip.e-co{background:var(--surface2);color:var(--muted)}
+
+.empty{background:var(--surface);border:1px dashed var(--line);border-radius:var(--radius);
+  padding:16px;color:var(--muted);font-size:13.5px;line-height:1.5}
+.empty b{display:block;color:var(--ink2);font-size:14.5px;margin-bottom:3px}
+.note{font-size:12.5px;color:var(--muted);line-height:1.45;margin:8px 0 0}
+
+/* ---------- tabs ---------- */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--surface);
+  border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+.tabs-in{max-width:600px;margin:0 auto;display:flex}
+.tab{flex:1;min-height:60px;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:3px;color:var(--muted);font-size:11px;font-weight:600;position:relative}
+.tab svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;
+  stroke-linecap:round;stroke-linejoin:round}
+.tab[aria-selected="true"]{color:var(--accent)}
+.badge{position:absolute;top:8px;right:calc(50% - 22px);background:var(--critical);color:#fff;
+  font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:999px;
+  display:flex;align-items:center;justify-content:center;padding:0 4px}
+
+/* ---------- filtros y búsqueda ---------- */
+.search{margin:0 4px 10px}
+.search input{width:100%;min-height:var(--tap);border:1px solid var(--line);
+  border-radius:var(--radius);background:var(--surface);padding:10px 13px;font-size:16px}
+.fbar{display:flex;gap:7px;overflow-x:auto;padding:0 4px 10px;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none}
+.fbar::-webkit-scrollbar{display:none}
+.fb{flex:none;min-height:38px;padding:7px 13px;border-radius:999px;background:var(--surface);
+  box-shadow:inset 0 0 0 1px var(--line);font-size:13px;font-weight:600;color:var(--ink2);white-space:nowrap}
+.fb[aria-pressed="true"]{background:var(--accent);color:#fff;box-shadow:none}
+.selrow{display:flex;gap:8px;padding:0 4px 12px;flex-wrap:wrap}
+.selrow select{flex:1;min-width:calc(50% - 4px);min-height:42px;border:1px solid var(--line);
+  border-radius:11px;background:var(--surface);padding:8px 10px;font-size:14px;
+  -webkit-appearance:none;appearance:none;
+  background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);
+  background-position:calc(100% - 16px) 19px,calc(100% - 11px) 19px;
+  background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+.selrow select.on{box-shadow:inset 0 0 0 1.5px var(--accent);color:var(--accent-ink)}
+
+.addbtn{width:100%;min-height:var(--tap);margin-top:9px;border-radius:var(--radius);
+  background:var(--accent);color:#fff;font-weight:700;font-size:15px;
+  display:flex;align-items:center;justify-content:center;gap:8px}
+.addbtn.sec2{background:var(--surface);color:var(--ink2);box-shadow:inset 0 0 0 1.5px var(--line)}
+
+/* ---------- tablero ---------- */
+.seg{display:flex;gap:6px;background:var(--surface2);padding:4px;border-radius:12px;margin:0 4px 14px}
+.seg button{flex:1;min-height:38px;border-radius:9px;font-size:13.5px;font-weight:600;color:var(--ink2)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:0 4px 20px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:12px 13px;box-shadow:var(--shadow)}
+.kpi.wide{grid-column:1 / -1}
+.k-l{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.k-v{font-family:"Bricolage Grotesque",Archivo,sans-serif;font-weight:800;font-size:30px;
+  line-height:1.1;margin-top:4px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.k-n{font-size:12px;color:var(--muted);margin-top:3px;font-weight:600}
+.k-n.up{color:var(--good)} .k-n.down{color:var(--critical)}
+.funnel{display:flex;flex-direction:column;gap:7px;background:var(--surface);
+  border:1px solid var(--line);border-radius:var(--radius);padding:13px;box-shadow:var(--shadow)}
+.fr{display:flex;align-items:center;gap:9px;font-size:13px}
+.fl{width:88px;flex:none;color:var(--ink2);font-weight:600;font-size:12.5px}
+.ft{flex:1;height:9px;border-radius:999px;background:var(--surface2);overflow:hidden}
+.ft i{display:block;height:100%;background:var(--accent);border-radius:999px}
+.fr.g .ft i{background:var(--good)}
+.fr.r .ft i{background:var(--critical)}
+.fn{width:26px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums;font-size:13px}
+
+/* ---------- ficha ---------- */
+.sheet{position:fixed;inset:0;z-index:60;background:var(--ground);overflow-y:auto;
+  -webkit-overflow-scrolling:touch}
+.sh-top{position:sticky;top:0;z-index:5;background:var(--ground);border-bottom:1px solid var(--line)}
+.sh-in{max-width:600px;margin:0 auto;padding:calc(12px + env(safe-area-inset-top)) 14px 11px}
+.sh-row{display:flex;align-items:flex-start;gap:10px}
+.sh-name{font-family:"Bricolage Grotesque",Archivo,sans-serif;font-weight:800;font-size:20px;
+  line-height:1.15;letter-spacing:-.02em;flex:1;text-wrap:balance}
+.x{width:38px;height:38px;flex:none;border-radius:999px;background:var(--surface2);
+  color:var(--ink2);font-size:16px;display:flex;align-items:center;justify-content:center}
+.sh-meta{margin-top:9px;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.sh-body{max-width:600px;margin:0 auto;padding:14px 12px calc(40px + env(safe-area-inset-bottom))}
+.blk{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:13px;margin-bottom:11px;box-shadow:var(--shadow)}
+.blk-h{font-family:"Bricolage Grotesque",Archivo,sans-serif;font-weight:700;font-size:12.5px;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:11px;
+  display:flex;align-items:center;gap:8px}
+.blk-h .cnt{font-family:Archivo,sans-serif;letter-spacing:0;background:var(--line);
+  color:var(--ink2);border-radius:999px;padding:1px 8px;font-size:11.5px}
+.linkrow{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;margin:-2px 0}
+.linkrow::-webkit-scrollbar{display:none}
+.lnk{flex:none;min-height:var(--tap);padding:0 15px;border-radius:999px;background:var(--accent-soft);
+  color:var(--accent-ink);font-weight:700;font-size:14px;text-decoration:none;
+  display:inline-flex;align-items:center;gap:7px}
+.lnk svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;
+  stroke-linecap:round;stroke-linejoin:round}
+.fld{margin-bottom:11px}
+.fld label{display:block;font-size:12.5px;font-weight:600;color:var(--ink2);margin-bottom:5px}
+.fld input,.fld textarea,.fld select{width:100%;min-height:var(--tap);border:1px solid var(--line);
+  border-radius:11px;background:var(--surface2);padding:11px 12px;font-size:16px}
+.fld textarea{min-height:84px;resize:vertical;line-height:1.45}
+.fld select{-webkit-appearance:none;appearance:none;
+  background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);
+  background-position:calc(100% - 17px) 22px,calc(100% - 12px) 22px;
+  background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+.two{display:flex;gap:9px}
+.two .fld{flex:1;min-width:0}
+.logs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.act{min-height:var(--tap);border-radius:11px;background:var(--accent);color:#fff;
+  font-weight:700;font-size:14.5px;padding:10px 12px;text-align:center;line-height:1.2}
+.act.ghost{background:var(--surface2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+.act.ok{background:var(--good);color:#fff}
+.act.no{background:var(--surface2);color:var(--critical);box-shadow:inset 0 0 0 1px var(--critical)}
+.states{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.states::-webkit-scrollbar{display:none}
+.st{flex:none;min-height:40px;padding:8px 14px;border-radius:999px;background:var(--surface2);
+  box-shadow:inset 0 0 0 1px var(--line);font-size:13.5px;font-weight:600;white-space:nowrap}
+.st[aria-pressed="true"]{background:var(--accent);color:#fff;box-shadow:none}
+.st.good[aria-pressed="true"]{background:var(--good)}
+.st.bad[aria-pressed="true"]{background:var(--critical)}
+.temps{display:flex;gap:8px}
+.tb{flex:1;min-height:var(--tap);border-radius:11px;background:var(--surface2);
+  box-shadow:inset 0 0 0 1px var(--line);font-size:14px;font-weight:600}
+.tb[aria-pressed="true"]{color:#fff;box-shadow:none}
+.tb.c[aria-pressed="true"]{background:var(--accent)}
+.tb.t[aria-pressed="true"]{background:var(--warn)}
+.tb.f[aria-pressed="true"]{background:var(--cold)}
+.quick{display:flex;gap:7px;flex-wrap:wrap}
+.qb{min-height:40px;padding:8px 13px;border-radius:999px;background:var(--surface2);
+  box-shadow:inset 0 0 0 1px var(--line);font-size:13.5px;font-weight:600}
+.chk{display:flex;align-items:center;gap:11px;min-height:var(--tap);width:100%;text-align:left;
+  padding:6px 0;border-bottom:1px solid var(--line)}
+.chk:last-child{border-bottom:none}
+.chk .bx{width:26px;height:26px;flex:none;border-radius:8px;box-shadow:inset 0 0 0 1.5px var(--line);
+  display:flex;align-items:center;justify-content:center;font-size:15px;color:transparent}
+.chk[aria-pressed="true"] .bx{background:var(--good);box-shadow:none;color:#fff}
+.chk .lb{flex:1;font-size:14.5px;font-weight:600}
+.chk[aria-pressed="true"] .lb{color:var(--muted);text-decoration:line-through}
+.chk .dt{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.ag{background:var(--surface2);border-radius:12px;padding:12px;margin-bottom:10px;
+  box-shadow:inset 0 0 0 1px var(--line)}
+.ag-h{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.ag-t{flex:1;font-weight:700;font-size:14.5px;letter-spacing:-.01em}
+.ag-x{width:34px;height:34px;flex:none;border-radius:999px;background:var(--surface);
+  color:var(--muted);font-size:14px;display:flex;align-items:center;justify-content:center}
+.ag .fld input,.ag .fld textarea,.ag .fld select{background:var(--surface)}
+.dl{display:flex;gap:12px;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px}
+.dl:last-child{border-bottom:none}
+.dl dt{width:110px;flex:none;color:var(--muted);font-size:13px}
+.dl dd{margin:0;flex:1;min-width:0;overflow-wrap:anywhere}
+.tl{display:flex;flex-direction:column}
+.ev{display:flex;gap:11px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+.ev:last-child{border-bottom:none}
+.ed{width:46px;flex:none;color:var(--muted);font-size:12.5px;font-weight:600;
+  font-variant-numeric:tabular-nums;padding-top:1px}
+.et{flex:1;min-width:0}
+.et small{display:block;color:var(--muted);font-size:13px;margin-top:2px;overflow-wrap:anywhere}
+.danger{width:100%;min-height:44px;border-radius:11px;color:var(--critical);font-size:13.5px;
+  font-weight:600;box-shadow:inset 0 0 0 1px var(--critical-soft);background:var(--critical-soft)}
+
+/* ---------- configuración ---------- */
+.cfg-item{display:flex;align-items:center;gap:9px;min-height:44px;
+  border-bottom:1px solid var(--line);font-size:14.5px}
+.cfg-item:last-of-type{border-bottom:none}
+.cfg-item .nm{flex:1;min-width:0}
+.cfg-item .tg{font-size:11px;font-weight:700;color:var(--accent-ink);background:var(--accent-soft);
+  border-radius:999px;padding:2px 8px;white-space:nowrap}
+.cfg-x{width:34px;height:34px;flex:none;border-radius:999px;background:var(--surface2);
+  color:var(--muted);font-size:14px;display:flex;align-items:center;justify-content:center}
+.addrow{display:flex;gap:8px;margin-top:11px}
+.addrow input{flex:1;min-width:0;min-height:44px;border:1px solid var(--line);border-radius:11px;
+  background:var(--surface2);padding:10px 12px;font-size:16px}
+.addrow button{flex:none;min-height:44px;padding:0 16px;border-radius:11px;background:var(--accent);
+  color:#fff;font-weight:700;font-size:14px}
+.swrow{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:13.5px;color:var(--ink2)}
+.swrow input{width:20px;height:20px;flex:none;accent-color:var(--accent)}
+.quien{text-align:center;color:var(--muted);font-size:12.5px;margin:18px 0 10px}
+.salir{width:100%;min-height:46px;border-radius:11px;background:var(--surface);
+  box-shadow:inset 0 0 0 1px var(--line);color:var(--ink2);font-weight:600;font-size:14px;margin-top:9px}
+
+/* ---------- carga por lista ---------- */
+.mapfila{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid var(--line)}
+.mapfila:last-of-type{border-bottom:none}
+.mapcol{flex:1;min-width:0}
+.mapcol b{display:block;font-size:13.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mapcol small{display:block;color:var(--muted);font-size:12px;margin-top:2px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mapfila select{flex:none;width:45%;min-height:44px;border:1px solid var(--line);
+  border-radius:11px;background:var(--surface2);padding:8px 26px 8px 10px;font-size:14px;
+  -webkit-appearance:none;appearance:none;
+  background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);
+  background-position:calc(100% - 15px) 20px,calc(100% - 10px) 20px;
+  background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+.mapfila select.on{box-shadow:inset 0 0 0 1.5px var(--accent)}
+.pv{display:flex;flex-direction:column;gap:7px}
+.pvi{background:var(--surface2);border-radius:11px;padding:10px 12px;
+  box-shadow:inset 0 0 0 1px var(--line)}
+.pvi.dup{opacity:.55}
+.pvn{font-weight:700;font-size:14.5px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.pvd{font-size:12.5px;color:var(--muted);margin-top:3px;overflow-wrap:anywhere}
+.rsum{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:13px}
+.rsum > div{flex:1;min-width:86px;background:var(--surface2);border-radius:11px;padding:10px 11px;
+  box-shadow:inset 0 0 0 1px var(--line)}
+.rsum b{display:block;font-family:"Bricolage Grotesque",Archivo,sans-serif;font-weight:800;
+  font-size:25px;line-height:1.1;font-variant-numeric:tabular-nums}
+.rsum span{font-size:11.5px;color:var(--muted);font-weight:600;line-height:1.3;display:block;margin-top:2px}
+.rsum .si b{color:var(--good)}
+.rsum .no b{color:var(--muted)}
+.ejemplo{background:var(--surface2);border-radius:11px;padding:11px 12px;margin:0 0 12px;
+  box-shadow:inset 0 0 0 1px var(--line);font-size:12.5px;color:var(--ink2);line-height:1.6;
+  font-variant-numeric:tabular-nums;overflow-x:auto;white-space:pre;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+/* ---------- login / pantallas ---------- */
+.gate{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px 18px}
+.gate-in{width:100%;max-width:400px}
+.gate-t{font-family:"Bricolage Grotesque",Archivo,sans-serif;font-weight:800;font-size:26px;
+  letter-spacing:-.02em;margin:0 0 8px}
+.gate-p{color:var(--ink2);font-size:14.5px;line-height:1.5;margin:0 0 20px}
+.gate-e{color:var(--critical);font-size:13.5px;line-height:1.45;margin:12px 0 0;font-weight:600}
+.gate-n{color:var(--muted);font-size:12.5px;line-height:1.5;margin:16px 0 0}
+.gate .fld input,.gate .fld textarea{background:var(--surface)}
+.gate .act{width:100%}
+
+.toast{position:fixed;left:50%;transform:translateX(-50%);
+  bottom:calc(78px + env(safe-area-inset-bottom));z-index:90;
+  background:var(--ink);color:var(--ground);padding:11px 17px;border-radius:999px;
+  font-size:13.5px;font-weight:600;max-width:90vw;text-align:center;
+  box-shadow:0 8px 26px rgba(0,0,0,.28);animation:up .18s ease}
+@keyframes up{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.min.js"></script>
+<script id="app-script">
+(function(){
+"use strict";
+
+/* =====================================================================
+   CONFIGURACIÓN — pegá acá los dos valores de Supabase
+   Supabase -> tu proyecto -> Settings -> API Keys -> Publishable key
+   ===================================================================== */
+var SUPABASE_URL = "https://uxlokriwxybeugdkicbm.supabase.co";
+var SUPABASE_KEY = "sb_publishable_ZDtM_CMt7bFN021tt1LMtQ_Rt7l_Bih";
+/* ===================================================================== */
+
+var PAGINA_SRC = "<!doctype html>\n" + document.documentElement.outerHTML;
+var CFG = "acl_cfg_v1";
+var CACHE = "acl_cache_v1";
+try{var _c=JSON.parse(localStorage.getItem(CFG)||"null");
+  if(_c&&_c.url&&_c.key){SUPABASE_URL=_c.url;SUPABASE_KEY=_c.key;}}catch(_x){}
+
+var sb=null, sesion=null, miEmail="";
+var ROOT=document.getElementById("root");
+
+/* Valores por defecto: si la tabla config está vacía, la app igual arranca. */
+var DEF={
+  companias:["ATM Seguros","Berkley","Mercantil Andina","Triunfo","CNP","Life"],
+  ramas:["Automotor","Motovehículo","Náutica","Vida","Ahorro","ART","Caución","Hogar","Comercio"],
+  tipos:[{n:"Agencia de autos",ag:true},{n:"Agencia de motos",ag:true},
+         {n:"Agencia náutica",ag:true},{n:"Datero",ag:false},
+         {n:"Vendedor independiente",ag:false},{n:"Profesional",ag:false}],
+  pasos:["Papeles","Matrícula","Alta de subusuario","Capacitación"],
+  dias_dormido:30, dias_alta:15
+};
+var S={socios:[], cfg:JSON.parse(JSON.stringify(DEF))};
+
+/* ---------- el embudo ---------- */
+var ORDEN=["Identificado","Contactado","Reunión","Interesado","En alta","Activo","Dormido","Descartado"];
+var FIJOS={"Interesado":1,"En alta":1,"Activo":1,"Dormido":1,"Descartado":1};
+/* En la lista de Socios primero va lo que pide acción, no el orden del embudo. */
+var ORDEN_LISTA=["Dormido","En alta","Interesado","Reunión","Contactado","Activo",
+                 "Identificado","Descartado"];
+var CERRADO={"Descartado":1};
+var TEMPS=["Frío","Tibio","Caliente"];
+var PAGOS=["Comisión asignada (%)","Se queda con la cuota 1","Monto fijo por póliza",
+           "Mixto","A definir"];
+
+/* ---------- helpers ---------- */
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function pad(n){return n<10?"0"+n:""+n;}
+function isoDe(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());}
+function hoyISO(){return isoDe(new Date());}
+function masDias(n){var d=new Date();d.setDate(d.getDate()+n);return isoDe(d);}
+function dmy(iso){if(!iso)return"";var p=String(iso).split("-");return p[2]+"/"+p[1];}
+function dmya(iso){if(!iso)return"";var p=String(iso).split("-");return p[2]+"/"+p[1]+"/"+p[0];}
+function diasEntre(a,b){return Math.round((Date.parse(b+"T00:00:00")-Date.parse(a+"T00:00:00"))/864e5);}
+function key(s){return String(s||"").replace(/[^A-Za-z]/g,"");}
+function num(v,d){var n=Number(v);return isNaN(n)?d:n;}
+function plural(n,s,p){return n+" "+(n===1?s:p);}
+
+/* Teléfonos argentinos: acepta 0362 15-412-3456, +54 362 458-0300, 362 4580300 */
+function normTel(raw){
+  var s=String(raw||"").trim();
+  if(!s)return "";
+  if(s.charAt(0)==="+")return s.replace(/[^\d]/g,"");
+  var d=s.replace(/[^\d]/g,"");
+  if(!d)return "";
+  if(/^0?8[0-9]{2}/.test(d))return "";           // 0800 / 0810: no hay WhatsApp
+  if(d.indexOf("54")===0&&d.length>=12)return d;
+  if(d.charAt(0)==="0")d=d.slice(1);
+  if(d.indexOf("15")===0&&d.length>=10)d=d.slice(2);
+  // sacar el 15 después de la característica (2 a 4 dígitos)
+  for(var c=2;c<=4;c++){
+    if(d.length>=12&&d.substr(c,2)==="15"){d=d.slice(0,c)+d.slice(c+2);break;}
+  }
+  if(d.length<10)return "";
+  return "549"+d;
+}
+function telCrudo(e){return (e.tel||e.wa||"").trim();}
+function telHref(e){var t=telCrudo(e);return t?t.replace(/[^\d+]/g,""):"";}
+function waHref(e){
+  var f=(e.wa||"").trim();
+  if(f.charAt(0)==="+")return f.replace(/[^\d]/g,"");
+  return normTel(f||e.tel);
+}
+function waLindo(e){
+  var n=waHref(e); if(!n)return "";
+  if(n.indexOf("549")===0){var r=n.slice(3);
+    return "+54 9 "+r.slice(0,3)+" "+r.slice(3,6)+"-"+r.slice(6);}
+  return "+"+n;
+}
+
+/* ---------- configuración: listas editables ---------- */
+function lista(k){var v=S.cfg[k];return Array.isArray(v)?v:(DEF[k]||[]);}
+function companias(){return lista("companias");}
+function ramas(){return lista("ramas");}
+function tipos(){return lista("tipos");}
+function pasos(){return lista("pasos");}
+function diasDormido(){return num(S.cfg.dias_dormido,30);}
+function diasAlta(){return num(S.cfg.dias_alta,15);}
+function esAgencia(ti){
+  var t=tipos();
+  for(var i=0;i<t.length;i++)if(t[i].n===ti)return !!t[i].ag;
+  return false;
+}
+
+/* ---------- guardado ---------- */
+var estadoGuardado="ok", cola={}, timers={}, ultimaEscritura={}, reintento=null;
+
+function marcar(st){
+  estadoGuardado=st;
+  var el=document.getElementById("saved");
+  if(el){el.className="saved "+st;el.textContent=
+    st==="busy"?"Guardando…":st==="err"?"Sin guardar":"Guardado";}
+}
+function cachear(){try{localStorage.setItem(CACHE,JSON.stringify(S));}catch(x){}}
+
+/* guardar(e) manda UN socio. Cada socio viaja solo, así dos personas
+   editando socios distintos nunca se pisan. */
+function guardar(e){
+  if(!e)return;
+  cachear(); marcar("busy");
+  cola[e.id]=e;
+  if(timers[e.id])clearTimeout(timers[e.id]);
+  timers[e.id]=setTimeout(function(){enviar(e.id);},700);
+}
+function enviar(id){
+  var e=cola[id]; if(!e)return;
+  if(!sb){marcar("err");programarReintento();return;}
+  ultimaEscritura[id]=Date.now();
+  sb.from("socios").upsert({id:e.id,datos:e,actualizado:new Date().toISOString(),por:miEmail})
+    .then(function(r){
+      if(r.error){marcar("err");programarReintento();return;}
+      delete cola[id];
+      if(Object.keys(cola).length===0)marcar("ok");
+    },function(){marcar("err");programarReintento();});
+}
+/* Si no hay señal, la app reintenta sola cada 15 segundos y cuando vuelve
+   la conexión. Nada de lo que cargaste se pierde mientras la app siga abierta. */
+function programarReintento(){
+  if(reintento)return;
+  reintento=setInterval(function(){
+    var ids=Object.keys(cola);
+    if(!ids.length){clearInterval(reintento);reintento=null;return;}
+    ids.forEach(enviar);
+  },15000);
+}
+window.addEventListener("online",function(){
+  Object.keys(cola).forEach(enviar);
+  if(Object.keys(cola).length)toast("Volvió la señal, guardando lo pendiente");
+});
+
+var tCfg=null;
+function guardarCfg(){
+  cachear(); marcar("busy");
+  if(!sb){marcar("err");return;}
+  if(tCfg)clearTimeout(tCfg);
+  tCfg=setTimeout(function(){
+    var filas=Object.keys(S.cfg).map(function(k){return {k:k,v:S.cfg[k]};});
+    sb.from("config").upsert(filas).then(function(r){r.error?marcar("err"):marcar("ok");},
+      function(){marcar("err");});
+  },600);
+}
+function toast(msg){
+  var old=document.querySelector(".toast"); if(old)old.remove();
+  var t=document.createElement("div");t.className="toast";t.textContent=msg;
+  document.body.appendChild(t);setTimeout(function(){if(t.parentNode)t.remove();},2800);
+}
+
+/* ---------- consultas sobre los socios ---------- */
+var V={tab:"hoy", q:"", fTipo:"", fEstado:"", fRama:"", fComp:"", abierta:null,
+       verMas:false, per:"semana", imp:null};
+
+function porId(id){for(var i=0;i<S.socios.length;i++)if(S.socios[i].id===id)return S.socios[i];return null;}
+function ultMov(e){return (e.log&&e.log.length)?e.log[e.log.length-1].f:"";}
+function diasQuieto(e){var f=ultMov(e);return f?diasEntre(f,hoyISO()):9999;}
+function tieneRama(e,r){
+  if(!r)return true;
+  return (e.ac||[]).some(function(a){return a.ra===r;});
+}
+function tieneComp(e,c){
+  if(!c)return true;
+  return (e.ac||[]).some(function(a){return a.co===c;});
+}
+function estadoDe(e){
+  if(CERRADO[e.es])return "cerr";
+  if(e.es==="Dormido")return "zzz";
+  if(e.pxf){var d=diasEntre(hoyISO(),e.pxf);
+    if(d<0)return "urg"; if(d===0)return "hoy"; return e.es==="Activo"?"ok":"fut";}
+  if(e.es==="Activo")return "ok";
+  return e.es==="Identificado"?"new":"fut";
+}
+function chipEstado(es){
+  var c=es==="Activo"?"e-act":es==="Dormido"?"e-zzz":es==="En alta"?"e-alta":
+        es==="Descartado"?"e-co":"";
+  return '<span class="e-chip '+c+'">'+esc(es)+'</span>';
+}
+function chipTemp(t){
+  if(!t)return '<span class="chip t-none">Sin calificar</span>';
+  return '<span class="chip t-'+(t==="Frío"?"Frio":key(t))+'">'+esc(t)+'</span>';
+}
+
+function vencidas(){return S.socios.filter(function(e){
+  return !CERRADO[e.es]&&e.pxf&&diasEntre(hoyISO(),e.pxf)<0;})
+  .sort(function(a,b){return a.pxf<b.pxf?-1:1;});}
+function paraHoy(){return S.socios.filter(function(e){
+  return !CERRADO[e.es]&&e.pxf&&diasEntre(hoyISO(),e.pxf)===0;});}
+function estaSemana(){return S.socios.filter(function(e){
+  if(CERRADO[e.es]||!e.pxf)return false;var d=diasEntre(hoyISO(),e.pxf);return d>0&&d<=7;})
+  .sort(function(a,b){return a.pxf<b.pxf?-1:1;});}
+function sinTocar(){return S.socios.filter(function(e){
+  return e.es==="Identificado"&&!e.pxf;})
+  .sort(function(a,b){
+    var r={"Caliente":0,"Tibio":1,"Frío":2};
+    var d=(r[a.temp]===undefined?3:r[a.temp])-(r[b.temp]===undefined?3:r[b.temp]);
+    return d!==0?d:(a.n<b.n?-1:1);});}
+
+/* Las dos alertas del negocio */
+function posiblesDormidos(){return S.socios.filter(function(e){
+  return e.es==="Activo"&&diasQuieto(e)>=diasDormido();})
+  .sort(function(a,b){return diasQuieto(b)-diasQuieto(a);});}
+function altasFrenadas(){return S.socios.filter(function(e){
+  return e.es==="En alta"&&diasQuieto(e)>=diasAlta();})
+  .sort(function(a,b){return diasQuieto(b)-diasQuieto(a);});}
+
+/* ---------- períodos y actividad ---------- */
+function lunesDe(semanasAtras){
+  var d=new Date(); var dow=(d.getDay()+6)%7;      // 0 = lunes
+  d.setDate(d.getDate()-dow-(semanasAtras*7));
+  return isoDe(d);
+}
+function primeroDeMes(mesesAtras){
+  var d=new Date(); d.setDate(1); d.setMonth(d.getMonth()-mesesAtras);
+  return isoDe(d);
+}
+function finDeMes(mesesAtras){
+  var d=new Date(); d.setDate(1); d.setMonth(d.getMonth()-mesesAtras+1); d.setDate(0);
+  return isoDe(d);
+}
+function periodos(){
+  var h=hoyISO();
+  if(V.per==="semana"){
+    var l0=lunesDe(0), l1=lunesDe(1);
+    var finAnt=isoDe(new Date(Date.parse(l0+"T00:00:00")-864e5));
+    return {ahora:[l0,h], antes:[l1,finAnt], et:"esta semana", ea:"la semana pasada"};
+  }
+  return {ahora:[primeroDeMes(0),h], antes:[primeroDeMes(1),finDeMes(1)],
+          et:"este mes", ea:"el mes pasado"};
+}
+/* Cuenta entradas del historial de tipo k dentro de un rango de fechas */
+function contar(k,ini,fin){
+  var n=0;
+  S.socios.forEach(function(e){
+    (e.log||[]).forEach(function(l){
+      if(l.k===k&&l.f>=ini&&l.f<=fin)n++;
+    });
+  });
+  return n;
+}
+function sociosTocados(ini,fin){
+  var n=0;
+  S.socios.forEach(function(e){
+    if((e.log||[]).some(function(l){return l.f>=ini&&l.f<=fin&&l.k&&l.k!=="+";}))n++;
+  });
+  return n;
+}
+
+/* ---------- render ---------- */
+var renderizando=false, renderPendiente=false;
+function render(){
+  if(renderizando){renderPendiente=true;return;}
+  renderizando=true;
+  // soltar el foco ANTES de reemplazar el DOM: si no, el blur dispara un change
+  // en medio del innerHTML y el navegador tira NotFoundError
+  var ae=document.activeElement;
+  if(ae&&(ae.tagName==="INPUT"||ae.tagName==="TEXTAREA"))ae.blur();
+  try{ pintar(); centrarActivos(); } finally { renderizando=false; }
+  if(renderPendiente){renderPendiente=false;render();}
+}
+function centrarActivos(){
+  [[".states",'[aria-pressed="true"]'],[".fbar",'[aria-pressed="true"]']].forEach(function(par){
+    var cont=document.querySelector(par[0]); if(!cont)return;
+    var act=cont.querySelector(par[1]); if(!act)return;
+    var x=act.offsetLeft-(cont.clientWidth-act.offsetWidth)/2;
+    cont.scrollLeft=Math.max(0,x);
+  });
+}
+function pintar(){
+  var tot=S.socios.length||1;
+  var activos=S.socios.filter(function(e){return e.es==="Activo";}).length;
+  var enJuego=S.socios.filter(function(e){
+    return ["Contactado","Reunión","Interesado","En alta"].indexOf(e.es)>=0;}).length;
+  var alertas=posiblesDormidos().length+altasFrenadas().length;
+  var pend=vencidas().length;
+
+  var h='<div class="shell">'
+   +'<header class="top"><div class="top-row">'
+   +'<span class="brand">ACL<small>red de socios</small></span>'
+   +'</div>'
+   +'<div class="bar">'
+   +'<i class="b-ok" style="width:'+(activos/tot*100)+'%"></i>'
+   +'<i class="b-go" style="width:'+(enJuego/tot*100)+'%"></i>'
+   +'</div>'
+   +'<div class="barlab"><span><em>'+activos+'</em> '+(activos===1?"activo":"activos")+'</span>'
+   +'<span><em>'+enJuego+'</em> en juego</span>'
+   +'<span><em>'+S.socios.length+'</em> en total</span>'
+   +'<span id="saved" class="saved ok">Guardado</span></div>'
+   +'</header><main>';
+
+  if(V.tab==="hoy")          h+=vistaHoy();
+  else if(V.tab==="socios")  h+=vistaSocios();
+  else if(V.tab==="tablero") h+=vistaTablero();
+  else                       h+=vistaAjustes();
+
+  h+='</main>'
+   +'<nav class="tabs"><div class="tabs-in">'
+   + tab("hoy","Hoy",'<path d="M3 11l18-8-8 18-2-8-8-2z"/>',pend+alertas)
+   + tab("socios","Socios",'<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>',0)
+   + tab("tablero","Tablero",'<path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/>',0)
+   + tab("ajustes","Ajustes",'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-2.9 1.2V21a2 2 0 11-4 0v-.1A1.7 1.7 0 006 19.4l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00-1.2-2.9H2a2 2 0 110-4h.1A1.7 1.7 0 003.4 6l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 002.9-1.2V2a2 2 0 114 0v.1A1.7 1.7 0 0018 3.4l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 001.2 2.9H22a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/>',0)
+   +'</div></nav></div>';
+
+  if(V.imp){h+=pantallaImportar();}
+  else if(V.abierta!=null){var e=porId(V.abierta); if(e)h+=ficha(e);}
+  ROOT.innerHTML=h;
+  marcar(estadoGuardado);
+}
+function tab(id,label,path,badge){
+  return '<button class="tab" data-tab="'+id+'" aria-selected="'+(V.tab===id)+'" role="tab">'
+   +'<svg viewBox="0 0 24 24" aria-hidden="true">'+path+'</svg><span>'+label+'</span>'
+   +(badge>0?'<span class="badge">'+badge+'</span>':'')+'</button>';
+}
+
+function tarjeta(e){
+  var st=estadoDe(e);
+  var cls=st==="cerr"?"card":"card s-"+st;
+  var sub=[e.ti||"", e.lo||""].filter(Boolean).join(" · ");
+  var when="";
+  if(e.pxf&&!CERRADO[e.es]){
+    var d=diasEntre(hoyISO(),e.pxf);
+    when='<div class="c-when '+(d<0?"urg":d===0?"hoy":"fut")+'">'
+      +(d<0?"Se te pasó hace "+plural(-d,"día","días")
+        :d===0?"Para hoy"
+        :"En "+plural(d,"día","días")+" · "+dmy(e.pxf))+'</div>';
+  }
+  var ramitas={};
+  (e.ac||[]).forEach(function(a){if(a.co)ramitas[a.co]=1;});
+  var comps=Object.keys(ramitas).slice(0,3);
+  return '<button class="'+cls+'" data-open="'+e.id+'">'
+   +'<div class="c-top"><span class="c-name">'+esc(e.n)+'</span>'
+   +chipTemp(e.temp)+'</div>'
+   +(sub?'<div class="c-sub">'+esc(sub)+'</div>':'')
+   +'<div class="c-chips">'+chipEstado(e.es)
+   + comps.map(function(c){return '<span class="e-chip e-co">'+esc(c)+'</span>';}).join("")
+   +'</div>'
+   +(e.px&&!CERRADO[e.es]?'<div class="c-next"><span class="dot"></span>'+esc(e.px)+'</div>':'')
+   +when+'</button>';
+}
+function seccion(titulo,arr,extraCls,vacio,nota){
+  if(!arr.length&&!vacio)return "";
+  return '<section class="sec '+(extraCls||"")+'"><h2 class="sec-h">'+titulo
+   +'<span class="cnt">'+arr.length+'</span></h2>'
+   +(nota&&arr.length?'<p class="note" style="margin:-4px 4px 9px">'+nota+'</p>':'')
+   +(arr.length?'<div class="list">'+arr.map(tarjeta).join("")+'</div>':vacio)+'</section>';
+}
+
+/* ---------- vista: Hoy ---------- */
+function vistaHoy(){
+  var v=vencidas(), hy=paraHoy(), sm=estaSemana();
+  var zzz=posiblesDormidos(), fre=altasFrenadas();
+  var st=sinTocar();
+  var mostrar=V.verMas?st:st.slice(0,6);
+  var h="";
+
+  h+=seccion("Se te pasaron",v,"urg","");
+  h+=seccion("Para hoy",hy,"hoy","");
+  if(!v.length&&!hy.length&&S.socios.length){
+    h+='<section class="sec"><div class="empty"><b>Ninguna acción vencida</b>'
+      +'Vas al día. Abajo tenés por quién arrancar.</div></section>';
+  }
+  h+=seccion("Se pueden estar durmiendo",zzz,"urg","",
+    "Activos sin ningún movimiento tuyo hace "+diasDormido()+" días o más. "
+    +"Abrilos y registrá si siguen mandando o pasalos a Dormido.");
+  h+=seccion("Altas frenadas",fre,"hoy","",
+    "Trámites de alta parados hace "+diasAlta()+" días o más.");
+
+  if(!S.socios.length){
+    h+='<section class="sec"><div class="empty"><b>Todavía no cargaste ningún socio</b>'
+      +'Andá a la pestaña Socios y tocá “Agregar socio”. '
+      +'Con el nombre y el tipo alcanza para arrancar; el resto lo completás cuando lo tengas.</div></section>';
+    return h;
+  }
+
+  h+='<section class="sec"><h2 class="sec-h">Arrancar por acá'
+   +'<span class="cnt">'+st.length+'</span></h2>'
+   +(mostrar.length?'<div class="list">'+mostrar.map(tarjeta).join("")+'</div>'
+     :'<div class="empty"><b>Ya tocaste a todos los identificados</b>'
+      +'Mirá la pestaña Socios para seguir con los que están en juego.</div>')
+   +(st.length>6?'<button class="addbtn sec2" data-vermas="1" style="margin-top:9px">'
+     +(V.verMas?"Ver menos":"Ver los "+st.length)+'</button>':'')
+   +'</section>';
+  h+=seccion("Esta semana",sm,"","");
+  return h;
+}
+
+/* ---------- vista: Socios ---------- */
+function opciones(arr,sel,vacio){
+  return '<option value="">'+esc(vacio)+'</option>'
+   + arr.map(function(x){
+      var v=typeof x==="string"?x:x.n;
+      return '<option value="'+esc(v)+'"'+(v===sel?" selected":"")+'>'+esc(v)+'</option>';
+     }).join("");
+}
+function vistaSocios(){
+  var arr=filtrarSocios();
+  return '<div class="search"><input id="q" type="search" '
+   +'placeholder="Buscar por nombre, contacto o localidad" value="'+esc(V.q)+'" autocomplete="off"></div>'
+   +'<div class="selrow">'
+   +'<select id="f-tipo" class="'+(V.fTipo?"on":"")+'">'+opciones(tipos(),V.fTipo,"Todos los tipos")+'</select>'
+   +'<select id="f-estado" class="'+(V.fEstado?"on":"")+'">'+opciones(ORDEN,V.fEstado,"Todos los estados")+'</select>'
+   +'<select id="f-rama" class="'+(V.fRama?"on":"")+'">'+opciones(ramas(),V.fRama,"Todas las ramas")+'</select>'
+   +'<select id="f-comp" class="'+(V.fComp?"on":"")+'">'+opciones(companias(),V.fComp,"Todas las compañías")+'</select>'
+   +'</div>'
+   +((V.fRama||V.fComp)?'<p class="note" style="margin:-6px 4px 12px">'
+     +'Filtrando por socios que tengan al menos un acuerdo'
+     +(V.fRama?' en '+esc(V.fRama):'')+(V.fComp?' con '+esc(V.fComp):'')+'.</p>':'')
+   +((V.fTipo||V.fEstado||V.fRama||V.fComp)
+     ?'<div class="fbar"><button class="fb" data-limpiar="1">Limpiar filtros ✕</button></div>':'')
+   +'<section class="sec"><h2 class="sec-h">Resultado'
+   +'<span class="cnt" id="cnt-soc">'+arr.length+'</span></h2>'
+   +'<div id="lista-soc">'+listaSoc(arr)+'</div>'
+   +'<button class="addbtn" data-add="1">'
+   +'<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>'
+   +'Agregar socio</button>'
+   +'<button class="addbtn sec2" data-imp="1">'
+   +'<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>'
+   +'Subir una lista</button>'
+   +'</section>';
+}
+function listaSoc(arr){
+  return arr.length?'<div class="list">'+arr.map(tarjeta).join("")+'</div>'
+    :'<div class="empty"><b>Nada con esos filtros</b>Probá con otro texto o limpiá los filtros.</div>';
+}
+function filtrarSocios(){
+  var q=V.q.toLowerCase().trim();
+  return S.socios.filter(function(e){
+    if(q){
+      var hay=[e.n,e.de,e.lo,e.ti,e.ob,e.aseg].filter(Boolean).join(" ").toLowerCase();
+      if(hay.indexOf(q)<0)return false;
+    }
+    if(V.fTipo&&e.ti!==V.fTipo)return false;
+    if(V.fEstado&&e.es!==V.fEstado)return false;
+    if(!tieneRama(e,V.fRama))return false;
+    if(!tieneComp(e,V.fComp))return false;
+    return true;
+  }).sort(function(a,b){
+    var d=ORDEN_LISTA.indexOf(a.es)-ORDEN_LISTA.indexOf(b.es);
+    return d!==0?d:(a.n<b.n?-1:1);
+  });
+}
+function refrescarLista(){
+  var arr=filtrarSocios();
+  var l=document.getElementById("lista-soc"), c=document.getElementById("cnt-soc");
+  if(l)l.innerHTML=listaSoc(arr);
+  if(c)c.textContent=arr.length;
+}
+
+/* =====================================================================
+   CARGA POR LISTA
+   Pegás lo que copiaste de un Excel o de Google Sheets y la app sola
+   se da cuenta de cómo viene: por tabulaciones, por punto y coma, por
+   comas o una columna sola de nombres. Después le decís a cada columna
+   qué es, ves cómo va a quedar, y recién ahí se carga.
+   ===================================================================== */
+var CAMPOS=[["","Ignorar"],["n","Nombre"],["tel","Teléfono"],["lo","Localidad"],
+            ["dir","Dirección"],["de","Con quién hablo"],["ob","Nota"]];
+var NOMBRE_CAMPO={n:"Nombre",tel:"Teléfono",lo:"Localidad",dir:"Dirección",
+                  de:"Con quién hablo",ob:"Nota"};
+
+function sinTildes(t){
+  return String(t||"").replace(/[áàäâã]/g,"a").replace(/[éèëê]/g,"e")
+    .replace(/[íìïî]/g,"i").replace(/[óòöôõ]/g,"o").replace(/[úùüû]/g,"u")
+    .replace(/ñ/g,"n");
+}
+/* Para comparar nombres: sin tildes, sin puntuación, sin dobles espacios
+   y sin las palabras que no distinguen nada (SA, SRL, "agencia"…). */
+var RUIDO=/\b(s\.?a\.?|s\.?r\.?l\.?|sas|scs|cia|compania|hnos|hermanos|e\s*hijos|automotores|automotor|agencia|concesionaria)\b/g;
+function normNombre(t){
+  var base=sinTildes(String(t||"").toLowerCase())
+    .replace(/\./g,"")                      // s.a. y sa tienen que dar lo mismo
+    .replace(/[^a-z0-9\s]/g," ");
+  var x=base.replace(RUIDO," ").replace(/\s+/g," ").trim();
+  if(!x)x=base.replace(/\s+/g," ").trim();  // un nombre que era todo ruido no queda en la nada
+  return x;
+}
+/* Parte una línea respetando las comillas, como hace el Excel. */
+function partir(l,d){
+  if(!d)return [l];
+  var out=[],cur="",q=false;
+  for(var i=0;i<l.length;i++){
+    var c=l.charAt(i);
+    if(c==='"'){ if(q&&l.charAt(i+1)==='"'){cur+='"';i++;} else q=!q; }
+    else if(c===d&&!q){out.push(cur);cur="";}
+    else cur+=c;
+  }
+  out.push(cur);
+  return out;
+}
+function detectarSep(lineas){
+  var m=lineas.slice(0,12);
+  var tabs=0; m.forEach(function(l){tabs+=l.split("\t").length-1;});
+  if(tabs>0)return "\t";                       // pegado desde Excel o Sheets
+  var uniforme=function(d){
+    var n=null, ok=true;
+    m.forEach(function(l){var k=partir(l,d).length;
+      if(n===null)n=k; else if(k!==n)ok=false;});
+    return ok&&n>1;
+  };
+  if(uniforme(";"))return ";";
+  if(uniforme(","))return ",";
+  return "";                                    // una sola columna de nombres
+}
+function pareceTelefono(v){
+  var t=String(v||"").trim();
+  if(!t)return false;
+  if(!/^[\d\s()+\-./]+$/.test(t))return false;
+  var d=t.replace(/[^\d]/g,"");
+  return d.length>=7&&d.length<=15;
+}
+var CABEZAS=[
+  ["lo",/localidad|ciudad|pueblo|zona|partido|loc\./i],
+  ["dir",/direcc|domicil|calle|ubicac|altura/i],
+  ["tel",/tel|cel|whats|m[oó]vil|movil|n[uú]mero/i],
+  ["de",/due[nñ]|encargad|titular|referen|responsable|contacto|persona/i],
+  ["ob",/nota|observ|origen|coment|detalle/i],
+  ["n",/nombre|socio|agencia|raz[oó]n|empresa|comercio|negocio|concesionaria/i]
+];
+function adivinarCabeza(txt){
+  var t=String(txt||"").trim();
+  if(!t)return "";
+  for(var i=0;i<CABEZAS.length;i++)if(CABEZAS[i][1].test(t))return CABEZAS[i][0];
+  return "";
+}
+/* Arma el mapa de columnas: con títulos, por el nombre del título;
+   sin títulos, la primera es el nombre y las que parecen teléfono, teléfono. */
+function mapearColumnas(A){
+  var mapa=[], i, j;
+  if(A.cab){
+    mapa=A.filas[0].map(adivinarCabeza);
+  }else{
+    for(i=0;i<A.ancho;i++)mapa.push("");
+    for(j=1;j<A.ancho;j++){
+      var col=A.filas.map(function(f){return f[j];}).filter(function(v){return v!=="";});
+      var tel=col.filter(pareceTelefono).length;
+      if(col.length&&tel/col.length>=0.6)mapa[j]="tel";
+    }
+  }
+  if(mapa.indexOf("n")<0)mapa[0]="n";
+  return mapa;
+}
+function analizarPegado(txt){
+  var lineas=String(txt||"").split(/\r?\n/)
+    .map(function(l){return l.replace(/\s+$/,"");})
+    .filter(function(l){return l.trim()!=="";});
+  if(!lineas.length)return null;
+  var sep=detectarSep(lineas);
+  var filas=lineas.map(function(l){
+    return partir(l,sep).map(function(c){return c.trim().replace(/^"|"$/g,"").trim();});
+  });
+  var ancho=filas.reduce(function(m,f){return Math.max(m,f.length);},0);
+  filas.forEach(function(f){while(f.length<ancho)f.push("");});
+  var prim=filas[0];
+  var aciertos=0;
+  prim.forEach(function(c){if(adivinarCabeza(c))aciertos++;});
+  var cab = filas.length>1 && aciertos>=Math.max(1,Math.ceil(ancho/2))
+            && !prim.some(pareceTelefono);
+  var A={sep:sep, filas:filas, ancho:ancho, cab:cab};
+  A.mapa=mapearColumnas(A);
+  return A;
+}
+/* Qué va a pasar con cada fila: nueva, repetida contra la base,
+   repetida dentro de la misma lista, o sin nombre. */
+function filasDeCarga(){
+  var A=V.imp&&V.imp.an; if(!A)return [];
+  var datos=A.filas.slice(A.cab?1:0);
+  var vistos={};
+  S.socios.forEach(function(e){var k=normNombre(e.n); if(k)vistos[k]="base";});
+  var out=[];
+  datos.forEach(function(f){
+    var r={n:"",tel:"",lo:"",dir:"",de:"",ob:""};
+    A.mapa.forEach(function(c,i){ if(c&&!r[c])r[c]=(f[i]||"").trim(); });
+    if(!r.n){out.push({r:r,estado:"sin"});return;}
+    var k=normNombre(r.n);
+    if(vistos[k]){out.push({r:r,estado:vistos[k]==="base"?"base":"lista"});return;}
+    vistos[k]="lista";
+    out.push({r:r,estado:"nuevo"});
+  });
+  return out;
+}
+
+function pantallaImportar(){
+  var I=V.imp;
+  return '<div class="sheet" role="dialog" aria-label="Subir una lista">'
+   +'<div class="sh-top"><div class="sh-in"><div class="sh-row">'
+   +'<span class="sh-name">Subir una lista</span>'
+   +'<button class="x" data-impcerrar="1" aria-label="Cerrar">✕</button></div>'
+   +'<div class="sh-meta"><span class="e-chip">Paso '+I.paso+' de 2</span>'
+   +(I.paso===2?'<span class="e-chip e-co">'+plural(I.an.ancho,"columna","columnas")+'</span>':'')
+   +'</div></div></div><div class="sh-body">'
+   +(I.paso===1?impPaso1(I):impPaso2(I))
+   +'</div></div>';
+}
+
+function impPaso1(I){
+  return '<div class="blk"><div class="blk-h">Pegá la lista</div>'
+   +'<p class="note" style="margin:0 0 11px">En el Excel o en el Google Sheets seleccioná '
+   +'las filas que querés subir, copialas, y pegalas acá abajo. También sirve una lista '
+   +'de nombres sueltos, uno por renglón.</p>'
+   +'<div class="ejemplo">Agencia Norte Autos\t3624580300\tResistencia\n'
+   +'Motos del Litoral\t3624112233\tFontana</div>'
+   +'<div class="fld" style="margin-bottom:0">'
+   +'<textarea id="imp-txt" style="min-height:170px" '
+   +'placeholder="Pegá acá lo que copiaste…" autocapitalize="off" spellcheck="false">'
+   +esc(I.txt||"")+'</textarea></div></div>'
+
+   +'<div class="blk"><div class="blk-h">Para todos los de esta lista</div>'
+   +'<div class="fld"><label for="imp-tipo">Tipo de socio</label>'
+   +'<select id="imp-tipo">'+opciones(tipos(),I.tipo,"Sin definir — lo elijo después")+'</select></div>'
+   +'<div class="fld" style="margin-bottom:0"><label for="imp-origen">De dónde salió la lista</label>'
+   +'<input id="imp-origen" type="text" value="'+esc(I.origen||"")+'" '
+   +'placeholder="Ej: padrón de ATM, me la pasó Juan"></div>'
+   +'<p class="note">Los dos son opcionales. El origen queda en las observaciones y en el '
+   +'historial de cada uno, así después sabés por qué está ahí.</p></div>'
+
+   +'<button class="act" data-imprevisar="1" style="width:100%">Revisar la lista</button>'
+   +'<p class="note" style="text-align:center">No se carga nada todavía: primero vas a ver '
+   +'cómo queda.</p>';
+}
+
+function impPaso2(I){
+  var A=I.an;
+  var items=filasDeCarga();
+  var nuevos=items.filter(function(x){return x.estado==="nuevo";});
+  var enBase=items.filter(function(x){return x.estado==="base";});
+  var enLista=items.filter(function(x){return x.estado==="lista";});
+  var sinNombre=items.filter(function(x){return x.estado==="sin";});
+  var repes=enBase.length+enLista.length;
+
+  var h='<div class="rsum">'
+   +'<div class="si"><b>'+nuevos.length+'</b><span>'+(nuevos.length===1?"socio nuevo":"socios nuevos")+'</span></div>'
+   +'<div class="no"><b>'+repes+'</b><span>'+(repes===1?"repetido":"repetidos")+'</span></div>'
+   +(sinNombre.length?'<div class="no"><b>'+sinNombre.length+'</b><span>sin nombre</span></div>':'')
+   +'</div>'
+   +(sinNombre.length?'<p class="note" style="margin:-6px 4px 14px">'
+     +plural(sinNombre.length,"fila","filas")+' sin nombre no se '
+     +(sinNombre.length===1?"carga":"cargan")+'. Si es un error, revisá abajo qué columna '
+     +'marcaste como Nombre.</p>':'');
+
+  h+='<div class="blk"><div class="blk-h">Qué es cada columna</div>'
+   +'<p class="note" style="margin:0 0 6px">'
+   +(A.sep==="\t"?"La lista vino separada por columnas del Excel."
+     :A.sep===";"?"La lista vino separada por punto y coma."
+     :A.sep===","?"La lista vino separada por comas."
+     :"La lista vino en una sola columna.")
+   +' Abajo de cada columna está lo primero que trae, para que veas cuál es cuál.</p>'
+   + A.mapa.map(function(c,i){
+      var muestra=A.filas.slice(A.cab?1:0,(A.cab?1:0)+3)
+        .map(function(f){return f[i];}).filter(Boolean).join(" · ");
+      var titulo=A.cab?(A.filas[0][i]||("Columna "+(i+1))):("Columna "+(i+1));
+      return '<div class="mapfila"><div class="mapcol"><b>'+esc(titulo)+'</b>'
+       +'<small>'+esc(muestra||"(vacía)")+'</small></div>'
+       +'<select class="'+(c?"on":"")+'" data-mapcol="'+i+'">'
+       + CAMPOS.map(function(cp){
+          return '<option value="'+cp[0]+'"'+(cp[0]===c?" selected":"")+'>'+cp[1]+'</option>';
+         }).join("")
+       +'</select></div>';
+     }).join("")
+   +'<label class="swrow"><input type="checkbox" id="imp-cab"'+(A.cab?" checked":"")+'>'
+   +'La primera fila son los títulos, no un socio</label>'
+   +'</div>';
+
+  h+='<div class="blk"><div class="blk-h">Cómo va a quedar'
+   +'<span class="cnt">'+items.length+'</span></div><div class="pv">'
+   + items.slice(0,8).map(function(x){
+      var r=x.r;
+      var extra=[r.tel?"Tel "+r.tel:"", r.de||"", r.lo||"", r.dir||"", r.ob||""]
+        .filter(Boolean).join(" · ");
+      var marca = x.estado==="base"?'<span class="e-chip e-zzz">ya lo tenés</span>'
+        : x.estado==="lista"?'<span class="e-chip e-zzz">repetido en la lista</span>'
+        : x.estado==="sin"?'<span class="e-chip e-zzz">sin nombre</span>' : '';
+      return '<div class="pvi'+(x.estado==="nuevo"?"":" dup")+'">'
+       +'<div class="pvn">'+esc(r.n||"(fila sin nombre)")+marca+'</div>'
+       +(extra?'<div class="pvd">'+esc(extra)+'</div>':'')
+       +'</div>';
+     }).join("")
+   +'</div>'
+   +(items.length>8?'<p class="note">Y '+plural(items.length-8,"fila más","filas más")+'. '
+     +'Se cargan todas, no solo las que ves acá.</p>':'')
+   +(I.tipo?'<p class="note">Todos entran como <b>'+esc(I.tipo)+'</b>, en estado Identificado.</p>'
+     :'<p class="note">Todos entran en estado Identificado, sin tipo de socio definido.</p>')
+   +'</div>';
+
+  if(repes){
+    var nombres=enBase.concat(enLista).map(function(x){return x.r.n;});
+    h+='<div class="blk"><div class="blk-h">Los que voy a saltear'
+     +'<span class="cnt">'+repes+'</span></div>'
+     +'<p class="note" style="margin:0 0 8px">A estos no los toco: el que ya está en tu base '
+     +'queda como está, con su historial y sus acuerdos intactos.</p>'
+     +'<div class="pv">'+nombres.slice(0,12).map(function(n){
+        return '<div class="pvi dup"><div class="pvn">'+esc(n)+'</div></div>';}).join("")+'</div>'
+     +(nombres.length>12?'<p class="note">Y '+plural(nombres.length-12,"más","más")+'.</p>':'')
+     +'</div>';
+  }
+
+  h+='<button class="act" data-impcargar="1" style="width:100%'
+   +(nuevos.length?'':';opacity:.5')+'">'
+   +(nuevos.length?"Cargar "+plural(nuevos.length,"socio","socios"):"No hay nada nuevo para cargar")
+   +'</button>'
+   +'<button class="salir" data-impvolver="1">Volver a pegar la lista</button>';
+  return h;
+}
+
+function guardarVarios(arr){
+  cachear(); marcar("busy");
+  if(!sb){arr.forEach(guardar);return;}
+  var ahora=new Date().toISOString();
+  arr.forEach(function(e){ultimaEscritura[e.id]=Date.now();});
+  var tandas=[], i;
+  for(i=0;i<arr.length;i+=200)tandas.push(arr.slice(i,i+200));  // listas largas, de a 200
+  var pendientes=tandas.length;
+  tandas.forEach(function(t){
+    sb.from("socios").upsert(t.map(function(e){
+      return {id:e.id,datos:e,actualizado:ahora,por:miEmail};
+    })).then(function(r){
+      if(r.error){t.forEach(guardar);}                 // si falla en bloque, de a uno
+      if(--pendientes===0&&Object.keys(cola).length===0)marcar("ok");
+    },function(){t.forEach(guardar);pendientes--;});
+  });
+}
+function cargarLista(){
+  var nuevos=filasDeCarga().filter(function(x){return x.estado==="nuevo";});
+  if(!nuevos.length){toast("No hay socios nuevos para cargar");return;}
+  var id=S.socios.reduce(function(m,e){return Math.max(m,e.id);},0);
+  var origen=(V.imp.origen||"").trim();
+  var tipo=V.imp.tipo||"";
+  var altas=nuevos.map(function(x){
+    id++;
+    var r=x.r;
+    return {id:id, n:r.n, ti:tipo, lo:r.lo||"", dir:r.dir||"",
+      de:r.de||"", ca:"", tel:r.tel||"", wa:"", em:"", web:"",
+      temp:"", es:"Identificado", px:"", pxf:"",
+      cuit:"", vol:"", aseg:"", cond:"",
+      ac:[], alta:{}, p1:"", ob:[r.ob||"", origen?("Origen: "+origen):""].filter(Boolean).join(" · "),
+      log:[{f:hoyISO(), t:"Socio cargado", k:"+",
+            d:origen?("Desde una lista · "+origen):"Desde una lista"}]};
+  });
+  S.socios=S.socios.concat(altas);
+  guardarVarios(altas);
+  V.imp=null; V.tab="socios"; V.q=""; V.fTipo=""; V.fEstado=""; V.fRama=""; V.fComp="";
+  render(); window.scrollTo(0,0);
+  toast(altas.length+" "+(altas.length===1?"socio cargado":"socios cargados"));
+}
+
+/* ---------- vista: Tablero ---------- */
+function kpi(label,ahora,antes,nota,ancho){
+  var d=ahora-antes, cls="", txt="";
+  if(antes===0&&ahora===0)      txt="igual que "+P.ea;
+  else if(d>0)                  {cls="up";   txt="+"+d+" que "+P.ea;}
+  else if(d<0)                  {cls="down"; txt=d+" que "+P.ea;}
+  else                          txt="igual que "+P.ea;
+  return '<div class="kpi'+(ancho?" wide":"")+'">'
+   +'<div class="k-l">'+esc(label)+'</div>'
+   +'<div class="k-v">'+ahora+'</div>'
+   +'<div class="k-n '+cls+'">'+esc(txt)+(nota?" · "+esc(nota):"")+'</div></div>';
+}
+var P=null;
+function vistaTablero(){
+  P=periodos();
+  var a=P.ahora, b=P.antes;
+  var zzz=posiblesDormidos(), fre=altasFrenadas();
+
+  var h='<div class="seg">'
+   +'<button data-per="semana" aria-pressed="'+(V.per==="semana")+'">Esta semana</button>'
+   +'<button data-per="mes" aria-pressed="'+(V.per==="mes")+'">Este mes</button>'
+   +'</div>'
+   +'<p class="note" style="margin:-6px 4px 12px">Del '+dmya(a[0])+' al '+dmya(a[1])
+   +'. Comparado contra '+P.ea+' ('+dmya(b[0])+' al '+dmya(b[1])+').</p>';
+
+  h+='<div class="kpis">'
+   + kpi("Socios tocados",sociosTocados(a[0],a[1]),sociosTocados(b[0],b[1]),
+        "personas distintas",true)
+   + kpi("Contactos",contar("c",a[0],a[1]),contar("c",b[0],b[1]),"")
+   + kpi("Reuniones",contar("r",a[0],a[1]),contar("r",b[0],b[1]),"")
+   + kpi("Altas arrancadas",contar("a",a[0],a[1]),contar("a",b[0],b[1]),"")
+   + kpi("Se activaron",contar("p",a[0],a[1]),contar("p",b[0],b[1]),"primera póliza")
+   + kpi("Socios nuevos",contar("+",a[0],a[1]),contar("+",b[0],b[1]),"cargados")
+   + kpi("Intentos sin éxito",contar("i",a[0],a[1]),contar("i",b[0],b[1]),"no lo encontré")
+   +'</div>';
+
+  /* Alertas */
+  h+='<section class="sec"><h2 class="sec-h">Alertas</h2>';
+  if(!zzz.length&&!fre.length){
+    h+='<div class="empty"><b>Ninguna alerta</b>'
+      +'Ningún activo quedó quieto más de '+diasDormido()+' días y ninguna alta está frenada.</div>';
+  }else{
+    h+='<div class="funnel">'
+     +'<div class="fr'+(zzz.length?" r":"")+'"><span class="fl">Se pueden estar durmiendo</span>'
+     +'<span class="ft"><i style="width:'+(zzz.length?100:0)+'%"></i></span>'
+     +'<span class="fn">'+zzz.length+'</span></div>'
+     +'<div class="fr'+(fre.length?" r":"")+'"><span class="fl">Altas frenadas</span>'
+     +'<span class="ft"><i style="width:'+(fre.length?100:0)+'%"></i></span>'
+     +'<span class="fn">'+fre.length+'</span></div>'
+     +'</div>'
+     +'<button class="addbtn sec2" data-tab="hoy" style="margin-top:10px">'
+     +'Ver quiénes son en la pestaña Hoy</button>';
+  }
+  h+='</section>';
+
+  /* Producción por compañía: cuántos socios tienen acuerdo con cada una */
+  var porComp={}, porRama={};
+  companias().forEach(function(c){porComp[c]=0;});
+  ramas().forEach(function(r){porRama[r]=0;});
+  S.socios.forEach(function(e){
+    var vc={}, vr={};
+    (e.ac||[]).forEach(function(ac){
+      if(ac.co&&porComp[ac.co]!=null&&!vc[ac.co]){porComp[ac.co]++;vc[ac.co]=1;}
+      if(ac.ra&&porRama[ac.ra]!=null&&!vr[ac.ra]){porRama[ac.ra]++;vr[ac.ra]=1;}
+    });
+  });
+  var maxC=Math.max.apply(null,[1].concat(companias().map(function(c){return porComp[c];})));
+  var conAcuerdo=S.socios.filter(function(e){return (e.ac||[]).length;}).length;
+  h+='<section class="sec"><h2 class="sec-h">Acuerdos por compañía'
+   +'<span class="cnt">'+conAcuerdo+'</span></h2>'
+   +(conAcuerdo?'<div class="funnel">'
+     + companias().map(function(c){
+        return '<div class="fr"><span class="fl">'+esc(c)+'</span>'
+         +'<span class="ft"><i style="width:'+(porComp[c]/maxC*100)+'%"></i></span>'
+         +'<span class="fn">'+porComp[c]+'</span></div>';}).join("")
+     +'</div>'
+     :'<div class="empty"><b>Todavía no cargaste acuerdos</b>'
+      +'Los acuerdos se cargan dentro de la ficha de cada agencia.</div>')
+   +'</section>';
+
+  var maxR=Math.max.apply(null,[1].concat(ramas().map(function(r){return porRama[r];})));
+  if(conAcuerdo){
+    h+='<section class="sec"><h2 class="sec-h">Acuerdos por rama</h2><div class="funnel">'
+     + ramas().map(function(r){
+        return '<div class="fr"><span class="fl">'+esc(r)+'</span>'
+         +'<span class="ft"><i style="width:'+(porRama[r]/maxR*100)+'%"></i></span>'
+         +'<span class="fn">'+porRama[r]+'</span></div>';}).join("")
+     +'</div></section>';
+  }
+  return h;
+}
+
+/* ---------- vista: Ajustes ---------- */
+function usoDeValor(campo,valor){
+  var n=0;
+  S.socios.forEach(function(e){
+    if(campo==="ti"){ if(e.ti===valor)n++; return; }
+    (e.ac||[]).forEach(function(a){if(a[campo]===valor)n++;});
+  });
+  return n;
+}
+function bloqueLista(titulo,clave,campo,ayuda){
+  var arr=lista(clave);
+  return '<div class="blk"><div class="blk-h">'+esc(titulo)
+   +'<span class="cnt">'+arr.length+'</span></div>'
+   +(arr.length?arr.map(function(x,i){
+      var nom=typeof x==="string"?x:x.n;
+      var tag=(clave==="tipos"&&x.ag)?'<span class="tg">negocia condiciones</span>':'';
+      return '<div class="cfg-item"><span class="nm">'+esc(nom)+'</span>'+tag
+       +'<button class="cfg-x" data-quitar="'+clave+'" data-i="'+i+'" '
+       +'data-campo="'+campo+'" aria-label="Quitar">✕</button></div>';
+     }).join("")
+     :'<p class="note" style="margin:0">La lista está vacía.</p>')
+   +'<div class="addrow"><input id="add-'+clave+'" type="text" placeholder="Agregar…" '
+   +'autocapitalize="sentences"><button data-agregar="'+clave+'">Sumar</button></div>'
+   +(clave==="tipos"?'<label class="swrow"><input type="checkbox" id="add-tipos-ag">'
+     +'Este tipo negocia condiciones comerciales (le aparece el bloque de acuerdos)</label>':'')
+   +(ayuda?'<p class="note">'+ayuda+'</p>':'')
+   +'</div>';
+}
+function vistaAjustes(){
+  var h='<p class="note" style="margin:0 4px 14px">Todo lo que cambies acá se guarda solo '
+   +'y aparece enseguida en las fichas y en los filtros.</p>';
+
+  h+=bloqueLista("Compañías","companias","co",
+    "Las que le podés ofrecer a un socio. Sumá una y aparece en todos los acuerdos.");
+  h+=bloqueLista("Ramas","ramas","ra",
+    "Automotor, vida, ART, lo que vayas sumando. Un acuerdo es siempre compañía + rama.");
+  h+=bloqueLista("Tipos de socio","tipos","ti",
+    "Los que negocian condiciones son las agencias: a esos les aparece el bloque de acuerdos "
+    +"y los datos de calificación. Los demás se siguen por temperatura.");
+  h+=bloqueLista("Pasos del trámite de alta","pasos","",
+    "El checklist que ves en la ficha cuando un socio está en alta. Cambialo según lo que pida cada compañía.");
+
+  h+='<div class="blk"><div class="blk-h">Plazos de las alertas</div>'
+   +'<div class="fld"><label for="dd">Un activo está dormido si no registro nada hace</label>'
+   +'<input id="dd" type="number" inputmode="numeric" min="1" value="'+diasDormido()+'"></div>'
+   +'<div class="fld" style="margin-bottom:0"><label for="da">Un alta está frenada si no avanza hace</label>'
+   +'<input id="da" type="number" inputmode="numeric" min="1" value="'+diasAlta()+'"></div>'
+   +'<p class="note">En días. La app te avisa; vos decidís si lo pasás a Dormido.</p></div>';
+
+  h+='<div class="blk"><div class="blk-h">Copia de los datos</div>'
+   +'<button class="addbtn sec2" data-csv="1" style="margin-top:0">Bajar todo en CSV para el Excel</button>'
+   +'<p class="note">Una fila por socio, con sus acuerdos y todo el historial. '
+   +'Sirve de respaldo y para trabajarlo en la computadora.</p></div>';
+
+  h+='<div class="quien">Sesión de '+esc(miEmail||"—")+'</div>'
+   +'<button class="salir" id="clave">Cambiar mi contraseña</button>'
+   +'<button class="salir" id="salir">Cerrar sesión</button>'
+   +'<p class="note" style="text-align:center">ACL · versión 1.0</p>';
+  return h;
+}
+
+/* ---------- la ficha del socio ---------- */
+function ficha(e){
+  var ag=esAgencia(e.ti);
+  var links=[];
+  if(telHref(e))links.push('<a class="lnk" href="tel:'+esc(telHref(e))+'">'
+   +'<svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 1.9.7 2.8a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.3-1.2a2 2 0 012.1-.5c.9.3 1.8.6 2.8.7a2 2 0 011.7 2z"/></svg>Llamar</a>');
+  if(waHref(e))links.push('<a class="lnk" href="https://wa.me/'+esc(waHref(e))+'" target="_blank" rel="noopener">'
+   +'<svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 01-12.6 7.3L3 21l2.3-5.3A8.4 8.4 0 1121 11.5z"/></svg>WhatsApp</a>');
+  if(e.em)links.push('<a class="lnk" href="mailto:'+esc(e.em)+'">'
+   +'<svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 6l8 6 8-6"/></svg>Mail</a>');
+  if(e.dir)links.push('<a class="lnk" href="https://www.google.com/maps/search/'
+   +encodeURIComponent(e.dir+" "+(e.lo||"Resistencia Chaco"))+'" target="_blank" rel="noopener">'
+   +'<svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 10-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Mapa</a>');
+
+  var h='<div class="sheet" role="dialog" aria-label="'+esc(e.n)+'">'
+   +'<div class="sh-top"><div class="sh-in"><div class="sh-row">'
+   +'<span class="sh-name">'+esc(e.n)+'</span>'
+   +'<button class="x" data-close="1" aria-label="Cerrar">✕</button></div>'
+   +'<div class="sh-meta">'+chipTemp(e.temp)+chipEstado(e.es)
+   +(e.ti?'<span class="e-chip e-co">'+esc(e.ti)+'</span>':'')
+   +'</div></div></div><div class="sh-body">';
+
+  /* 1. Contacto rápido */
+  h+='<div class="blk" style="padding-bottom:'+(links.length?"13px":"13px")+'">'
+   +(links.length?'<div class="linkrow">'+links.join("")+'</div>'
+     :'<p class="note" style="margin:0">Cargá el teléfono o el mail más abajo y acá te aparecen '
+      +'los botones para llamar y escribir.</p>')
+   +'</div>';
+
+  /* 1bis. Socio nuevo: lo primero es decir qué tipo es */
+  if(!e.ti){
+    h+='<div class="blk" style="box-shadow:inset 0 0 0 2px var(--accent)">'
+     +'<div class="blk-h" style="color:var(--accent-ink)">¿Qué tipo de socio es?</div>'
+     +'<div class="fld" style="margin-bottom:0">'
+     +'<select id="c_ti">'+opciones(tipos(),"","Elegir el tipo")+'</select></div>'
+     +'<p class="note">De esto depende qué ve la ficha: las agencias tienen acuerdos y '
+     +'calificación comercial; los dateros, vendedores y profesionales se siguen por temperatura.</p>'
+     +'</div>';
+  }
+
+  /* 2. Registrar lo que pasó */
+  h+='<div class="blk"><div class="blk-h">Registrar lo que pasó</div><div class="logs">'
+   +boton("llame","Lo llamé","ghost")+boton("wsp","Mandé WhatsApp","ghost")
+   +boton("visita","Lo visité","ghost")+boton("nada","No lo encontré","ghost")
+   +boton("reunion","Tuve reunión","")+boton("interes","Quedó interesado","")
+   +'</div><div class="logs" style="margin-top:8px">'
+   +boton("alta","Arrancó el alta","")
+   +boton("primera","Entró la 1ra póliza","ok")
+   +boton("sigue","Sigue mandando","ok")
+   +boton("dormido","Está dormido","no")
+   +'</div><div class="logs" style="margin-top:8px;grid-template-columns:1fr">'
+   +boton("descarte","Lo descarté","no")
+   +'</div>'
+   +'<p class="note">Cada botón deja el registro con la fecha de hoy, mueve el estado '
+   +'y te propone cuándo volver.</p></div>';
+
+  /* 3. Temperatura */
+  h+='<div class="blk"><div class="blk-h">Temperatura</div><div class="temps">'
+   +'<button class="tb f" data-temp="Frío" aria-pressed="'+(e.temp==="Frío")+'">Frío</button>'
+   +'<button class="tb t" data-temp="Tibio" aria-pressed="'+(e.temp==="Tibio")+'">Tibio</button>'
+   +'<button class="tb c" data-temp="Caliente" aria-pressed="'+(e.temp==="Caliente")+'">Caliente</button>'
+   +'</div></div>';
+
+  /* 4. Estado */
+  h+='<div class="blk"><div class="blk-h">Estado</div><div class="states">'
+   + ORDEN.map(function(x){
+      var c=x==="Activo"?" good":(x==="Descartado"||x==="Dormido")?" bad":"";
+      return '<button class="st'+c+'" data-est="'+esc(x)+'" aria-pressed="'+(e.es===x)+'">'
+       +esc(x)+'</button>';}).join("")
+   +'</div>'
+   +(e.es==="Activo"||e.es==="Dormido"
+     ?'<p class="note">Último movimiento hace '+plural(diasQuieto(e),"día","días")+'.</p>':'')
+   +'</div>';
+
+  /* 5. Próximo paso */
+  h+='<div class="blk"><div class="blk-h">Próximo paso</div>'
+   +'<div class="fld"><label for="px">Qué tengo que hacer</label>'
+   +'<input id="px" type="text" value="'+esc(e.px)+'" placeholder="Ej: pasar por la agencia y dejar la carpeta"></div>'
+   +'<div class="fld"><label for="pxf">Cuándo</label>'
+   +'<input id="pxf" type="date" value="'+esc(e.pxf)+'"></div>'
+   +'<div class="quick"><button class="qb" data-dias="0">Hoy</button>'
+   +'<button class="qb" data-dias="1">Mañana</button>'
+   +'<button class="qb" data-dias="3">En 3 días</button>'
+   +'<button class="qb" data-dias="7">En 1 semana</button>'
+   +'<button class="qb" data-dias="15">En 15 días</button>'
+   +'<button class="qb" data-dias="-1">Borrar</button></div></div>';
+
+  /* 6. Trámite de alta */
+  var pa=pasos(), hechos=0;
+  pa.forEach(function(p){if(e.alta&&e.alta[p])hechos++;});
+  var mostrarAlta=["Interesado","En alta","Activo","Dormido"].indexOf(e.es)>=0||hechos>0;
+  if(mostrarAlta){
+    h+='<div class="blk"><div class="blk-h">Trámite de alta'
+     +'<span class="cnt">'+hechos+"/"+pa.length+'</span></div>'
+     + pa.map(function(p){
+        var f=e.alta&&e.alta[p];
+        return '<button class="chk" data-paso="'+esc(p)+'" aria-pressed="'+(!!f)+'">'
+         +'<span class="bx">✓</span><span class="lb">'+esc(p)+'</span>'
+         +'<span class="dt">'+(f?dmy(f):"")+'</span></button>';}).join("")
+     +'<p class="note">Los pasos se editan desde Ajustes, para adaptarlos a lo que pida cada compañía.</p>'
+     +'</div>';
+  }
+
+  /* 7. Acuerdos — solo para los tipos que negocian condiciones */
+  if(ag){
+    var acs=e.ac||[];
+    h+='<div class="blk"><div class="blk-h">Condiciones comerciales'
+     +'<span class="cnt">'+acs.length+'</span></div>'
+     +(acs.length?acs.map(function(a,i){return bloqueAcuerdo(a,i);}).join("")
+       :'<p class="note" style="margin:0 0 11px">Todavía no hay ningún acuerdo cargado. '
+        +'Un acuerdo es una compañía, una rama y lo que pactaron. '
+        +'Un mismo socio puede tener varios, con condiciones distintas en cada uno.</p>')
+     +'<button class="addbtn sec2" data-addac="1" style="margin-top:0">Agregar acuerdo</button>'
+     +'</div>';
+
+    /* 8. Calificación de la agencia */
+    h+='<div class="blk"><div class="blk-h">Calificación</div>'
+   +'<div class="fld"><label for="c_cuit">CUIT</label>'
+   +'<input id="c_cuit" type="text" inputmode="numeric" value="'+esc(e.cuit)+'" placeholder="30-12345678-9"></div>'
+   +'<div class="fld"><label for="c_vol">Volumen que mueve por mes</label>'
+   +'<input id="c_vol" type="text" value="'+esc(e.vol)+'" placeholder="Ej: 15 unidades / 8 pólizas"></div>'
+   +'<div class="fld"><label for="c_aseg">Con qué aseguradora trabaja hoy</label>'
+   +'<input id="c_aseg" type="text" value="'+esc(e.aseg)+'" placeholder="Ej: coloca todo con Rivadavia"></div>'
+   +'<div class="fld" style="margin-bottom:0"><label for="c_cond">Con qué condición trabaja hoy</label>'
+   +'<textarea id="c_cond" placeholder="Lo que le pagan hoy: comisión, cuota 1, monto fijo. '
+   +'Es contra lo que vas a tener que competir.">'+esc(e.cond)+'</textarea></div></div>';
+  }
+
+  /* 9. Contacto */
+  h+='<div class="blk"><div class="blk-h">Contacto</div>'
+   +'<div class="fld"><label for="c_de">Con quién hablo</label>'
+   +'<input id="c_de" type="text" value="'+esc(e.de)+'" placeholder="Nombre y apellido" autocapitalize="words"></div>'
+   +'<div class="fld"><label for="c_ca">Qué es del negocio</label>'
+   +'<input id="c_ca" type="text" value="'+esc(e.ca)+'" placeholder="Ej: dueño, encargado de ventas"></div>'
+   +'<div class="fld"><label for="c_tel">Teléfono</label>'
+   +'<input id="c_tel" type="tel" inputmode="tel" value="'+esc(e.tel)+'" placeholder="362 458-0300"></div>'
+   +'<div class="fld"><label for="c_wa">WhatsApp <span style="font-weight:400">— solo si es distinto del teléfono</span></label>'
+   +'<input id="c_wa" type="tel" inputmode="tel" value="'+esc(e.wa||"")+'" placeholder="362 15-412-3456"></div>'
+   +(waLindo(e)?'<p class="note" style="margin:-4px 0 11px">WhatsApp va a abrir '+esc(waLindo(e))+'</p>':'')
+   +'<div class="fld"><label for="c_em">Mail</label>'
+   +'<input id="c_em" type="email" inputmode="email" autocapitalize="off" spellcheck="false" '
+   +'value="'+esc(e.em)+'" placeholder="nombre@lugar.com"></div>'
+   +'<div class="fld"><label for="c_lo">Localidad</label>'
+   +'<input id="c_lo" type="text" value="'+esc(e.lo)+'" placeholder="Resistencia" autocapitalize="words"></div>'
+   +'<div class="fld" style="margin-bottom:0"><label for="c_dir">Dirección</label>'
+   +'<input id="c_dir" type="text" value="'+esc(e.dir)+'" placeholder="Av. Sarmiento 1200" autocapitalize="words"></div>'
+   +'<p class="note">Cada campo se guarda solo cuando salís de él.</p></div>';
+
+  /* 10. Ficha general */
+  h+='<div class="blk"><div class="blk-h">Ficha</div>'
+   +(e.ti?'<div class="fld"><label for="c_ti">Tipo de socio</label>'
+     +'<select id="c_ti">'+opciones(tipos(),e.ti,"Sin definir")+'</select></div>':'')
+   +'<div class="fld"><label for="c_p1">Fecha de la primera póliza</label>'
+   +'<input id="c_p1" type="date" value="'+esc(e.p1||"")+'"></div>'
+   +'<div class="fld" style="margin-bottom:0"><label for="c_ob">Observaciones</label>'
+   +'<textarea id="c_ob" placeholder="Lo que conviene recordar de este socio.">'+esc(e.ob)+'</textarea></div>'
+   +'<p class="note">El tipo de socio decide qué ve la ficha: las agencias tienen acuerdos '
+   +'y calificación, el resto se sigue por temperatura.</p></div>';
+
+  /* 11. Anotar */
+  h+='<div class="blk"><div class="blk-h">Anotar algo</div>'
+   +'<div class="fld"><textarea id="nota" placeholder="Lo que te dijeron, quién te atendió, lo que quedó pendiente…"></textarea></div>'
+   +'<button class="act" data-nota="1" style="width:100%">Guardar nota</button></div>';
+
+  /* 12. Historial */
+  h+='<div class="blk"><div class="blk-h">Historial'
+   +'<span class="cnt">'+(e.log||[]).length+'</span></div>'
+   +((e.log&&e.log.length)?'<div class="tl">'+e.log.slice().reverse().map(function(l){
+      return '<div class="ev"><span class="ed">'+dmy(l.f)+'</span>'
+       +'<span class="et">'+esc(l.t)+(l.d?'<small>'+esc(l.d)+'</small>':'')+'</span></div>';
+     }).join("")+'</div>'
+     :'<p class="note" style="margin:0">Todavía no registraste nada con este socio.</p>')
+   +'</div>';
+
+  h+='<button class="danger" data-borrar="'+e.id+'">Eliminar este socio</button>';
+  h+='</div></div>';
+  return h;
+}
+function boton(id,txt,cls){return '<button class="act '+cls+'" data-acc="'+id+'">'+txt+'</button>';}
+
+function bloqueAcuerdo(a,i){
+  var esPorc=a.fp==="Comisión asignada (%)";
+  var esMonto=a.fp==="Monto fijo por póliza";
+  var titulo=[a.co||"Sin compañía",a.ra||"sin rama"].join(" · ");
+  var h='<div class="ag"><div class="ag-h"><span class="ag-t">'+esc(titulo)+'</span>'
+   +'<button class="ag-x" data-quitarac="'+i+'" aria-label="Quitar acuerdo">✕</button></div>'
+   +'<div class="two">'
+   +'<div class="fld"><label for="ac'+i+'_co">Compañía</label>'
+   +'<select id="ac'+i+'_co" data-ac="'+i+'">'+opciones(companias(),a.co,"Elegir")+'</select></div>'
+   +'<div class="fld"><label for="ac'+i+'_ra">Rama</label>'
+   +'<select id="ac'+i+'_ra" data-ac="'+i+'">'+opciones(ramas(),a.ra,"Elegir")+'</select></div>'
+   +'</div>'
+   +'<div class="fld"><label for="ac'+i+'_fp">Cómo cobra</label>'
+   +'<select id="ac'+i+'_fp" data-ac="'+i+'">'
+   +'<option value="">Elegir</option>'
+   + PAGOS.map(function(p){return '<option value="'+esc(p)+'"'+(p===a.fp?" selected":"")+'>'
+      +esc(p)+'</option>';}).join("")
+   +'</select></div>';
+  if(esPorc||esMonto){
+    h+='<div class="fld"><label for="ac'+i+'_pc">'
+     +(esPorc?"Porcentaje asignado":"Monto por póliza (ARS)")+'</label>'
+     +'<input id="ac'+i+'_pc" type="number" inputmode="decimal" data-ac="'+i+'" '
+     +'value="'+esc(a.pc||"")+'" placeholder="'+(esPorc?"Ej: 12":"Ej: 8000")+'"></div>';
+  }
+  h+='<div class="fld" style="margin-bottom:0"><label for="ac'+i+'_det">Lo que pactamos</label>'
+   +'<textarea id="ac'+i+'_det" data-ac="'+i+'" placeholder="El detalle: qué se lleva, desde cuándo, '
+   +'si hay premio por volumen, qué queda a definir…">'+esc(a.det||"")+'</textarea></div>'
+   +'</div>';
+  return h;
+}
+
+/* ---------- acciones de un toque ---------- */
+function acciones(){
+  var D=diasDormido();
+  return {
+    llame:   {t:"Lo llamé",               e:"Contactado", d:3,  p:"Volver a llamar",              k:"c"},
+    wsp:     {t:"Mandé WhatsApp",         e:"Contactado", d:2,  p:"Ver si contestó",              k:"c"},
+    visita:  {t:"Lo visité",              e:"Contactado", d:3,  p:"Volver a pasar",               k:"c"},
+    nada:    {t:"No lo encontré",         e:null,         d:2,  p:"Volver a intentar",            k:"i"},
+    reunion: {t:"Tuve reunión",           e:"Reunión",    d:3,  p:"Definir las condiciones",      k:"r"},
+    interes: {t:"Quedó interesado",       e:"Interesado", d:4,  p:"Cerrar condiciones y arrancar el alta", k:"r"},
+    alta:    {t:"Arrancó el alta",        e:"En alta",    d:5,  p:"Seguir el trámite",            k:"a"},
+    primera: {t:"Entró la primera póliza",e:"Activo",     d:D,  p:"Ver si sigue mandando",        k:"p"},
+    sigue:   {t:"Sigue mandando pólizas", e:"Activo",     d:D,  p:"Ver si sigue mandando",        k:"s"},
+    dormido: {t:"Se durmió",              e:"Dormido",    d:7,  p:"Llamarlo para reactivarlo",    k:"x"},
+    descarte:{t:"Lo descarté",            e:"Descartado", d:0,  p:"",                             k:"x"}
+  };
+}
+function rank(es){var i=ORDEN.indexOf(es);return i<0?0:i;}
+function aplicar(e,id){
+  var a=acciones()[id]; if(!a)return;
+  if(a.e){ if(FIJOS[a.e]||rank(a.e)>rank(e.es)) e.es=a.e; }
+  if(id==="primera"&&!e.p1)e.p1=hoyISO();
+  e.pxf = a.d>0 ? masDias(a.d) : "";
+  e.px  = a.p;
+  e.log.push({f:hoyISO(), t:a.t, d:"", k:a.k});
+  guardar(e); render();
+  toast(a.d>0 ? a.t+" · volver el "+dmy(e.pxf) : a.t);
+}
+
+/* ---------- alta de un socio ---------- */
+function agregar(){
+  var n=prompt("Nombre del socio (la agencia, la persona)");
+  if(!n||!n.trim())return;
+  var id=S.socios.reduce(function(m,e){return Math.max(m,e.id);},0)+1;
+  S.socios.push({
+    id:id, n:n.trim(), ti:"", lo:"Resistencia", dir:"",
+    de:"", ca:"", tel:"", wa:"", em:"", web:"",
+    temp:"", es:"Identificado", px:"", pxf:"",
+    cuit:"", vol:"", aseg:"", cond:"",
+    ac:[], alta:{}, p1:"", ob:"",
+    log:[{f:hoyISO(), t:"Socio cargado", d:"", k:"+"}]
+  });
+  guardar(porId(id));
+  V.abierta=id; render(); window.scrollTo(0,0);
+  toast("Elegí arriba qué tipo de socio es");
+}
+function borrar(id){
+  var e=porId(id); if(!e)return;
+  if(!confirm("¿Eliminar a "+e.n+"? Se borra también todo su historial y no se puede deshacer."))return;
+  S.socios=S.socios.filter(function(x){return x.id!==id;});
+  V.abierta=null; cachear(); render();
+  if(sb)sb.from("socios").delete().eq("id",id).then(function(r){
+    toast(r.error?"No se pudo borrar en la base: "+r.error.message:"Socio eliminado");
+  });
+}
+
+/* ---------- CSV ---------- */
+function csv(){
+  var cols=["ID","Socio","Tipo","Estado","Temperatura","Localidad","Dirección",
+    "Contacto","Qué es","Teléfono","WhatsApp","Mail","CUIT","Volumen",
+    "Aseguradora actual","Condición actual","Primera póliza",
+    "Próxima acción","Fecha próxima acción","Pasos del alta hechos","Acuerdos",
+    "Observaciones","Historial"];
+  var rows=[cols];
+  S.socios.forEach(function(e){
+    var acs=(e.ac||[]).map(function(a){
+      return [a.co||"?",a.ra||"?",a.fp||"a definir",(a.pc?a.pc:""),(a.det||"")]
+        .filter(Boolean).join(" / ");}).join("  ||  ");
+    var alt=Object.keys(e.alta||{}).filter(function(k){return e.alta[k];})
+      .map(function(k){return k+" ("+dmy(e.alta[k])+")";}).join(", ");
+    rows.push([e.id,e.n,e.ti,e.es,e.temp,e.lo,e.dir,e.de,e.ca,e.tel,e.wa||"",e.em,
+      e.cuit,e.vol,e.aseg,e.cond,e.p1||"",e.px,e.pxf,alt,acs,e.ob,
+      (e.log||[]).map(function(l){return dmy(l.f)+" "+l.t+(l.d?": "+l.d:"");}).join(" | ")]);
+  });
+  return "﻿"+rows.map(function(r){return r.map(function(c){
+    c=String(c==null?"":c);return '"'+c.replace(/"/g,'""')+'"';}).join(";");}).join("\r\n");
+}
+function bajarCSV(){
+  try{
+    var b=new Blob([csv()],{type:"text/csv;charset=utf-8"});
+    var a=document.createElement("a");
+    a.href=URL.createObjectURL(b);
+    a.download="socios_"+hoyISO()+".csv";
+    document.body.appendChild(a);a.click();
+    setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},1000);
+    toast("CSV descargado");
+  }catch(x){toast("No se pudo bajar el CSV");}
+}
+
+/* ---------- leer los campos de la ficha ---------- */
+function val(id){var n=document.getElementById(id);return n?n.value:null;}
+function leerCampos(e){
+  if(!e)return;
+  var txt={px:"px",pxf:"pxf",c_de:"de",c_ca:"ca",c_tel:"tel",c_wa:"wa",c_em:"em",
+    c_lo:"lo",c_dir:"dir",c_ob:"ob",c_ti:"ti",c_p1:"p1",
+    c_cuit:"cuit",c_vol:"vol",c_aseg:"aseg",c_cond:"cond"};
+  Object.keys(txt).forEach(function(id){
+    var v=val(id); if(v!==null)e[txt[id]]=v.trim();
+  });
+  (e.ac||[]).forEach(function(a,i){
+    ["co","ra","fp","pc","det"].forEach(function(c){
+      var v=val("ac"+i+"_"+c); if(v!==null)a[c]=typeof v==="string"?v.trim():v;
+    });
+  });
+}
+
+/* ---------- eventos ---------- */
+document.addEventListener("click",function(ev){
+  var t=ev.target.closest("[data-tab],[data-open],[data-close],[data-acc],[data-est],"
+    +"[data-dias],[data-nota],[data-add],[data-csv],[data-vermas],[data-temp],[data-paso],"
+    +"[data-addac],[data-quitarac],[data-borrar],[data-quitar],[data-agregar],[data-per],[data-limpiar],"
+    +"[data-imp],[data-impcerrar],[data-imprevisar],[data-impvolver],[data-impcargar]");
+  if(!t)return;
+  var e=V.abierta!=null?porId(V.abierta):null;
+  var d=t.dataset;
+
+  if(d.tab){V.tab=d.tab;V.verMas=false;V.abierta=null;render();window.scrollTo(0,0);return;}
+  if(d.open){V.abierta=Number(d.open);render();window.scrollTo(0,0);return;}
+  if(d.close){leerCampos(e);if(e)guardar(e);V.abierta=null;render();return;}
+  if(d.vermas){V.verMas=!V.verMas;render();return;}
+  if(d.per){V.per=d.per;render();return;}
+  if(d.limpiar){V.fTipo="";V.fEstado="";V.fRama="";V.fComp="";render();return;}
+  if(d.csv){bajarCSV();return;}
+  if(d.add){agregar();return;}
+
+  /* --- carga por lista --- */
+  if(d.imp){V.imp={paso:1,txt:"",tipo:"",origen:"",an:null};V.abierta=null;
+    render();window.scrollTo(0,0);return;}
+  if(d.impcerrar){
+    var escrito=(val("imp-txt")||V.imp.txt||"").trim();
+    if(escrito&&!confirm("¿Salir sin cargar la lista?"))return;
+    V.imp=null;render();return;}
+  if(d.imprevisar){
+    var tx=val("imp-txt")||"";
+    V.imp.txt=tx; V.imp.tipo=val("imp-tipo")||""; V.imp.origen=(val("imp-origen")||"").trim();
+    var A=analizarPegado(tx);
+    if(!A){toast("Pegá la lista primero");return;}
+    V.imp.an=A; V.imp.paso=2; render(); window.scrollTo(0,0); return;}
+  if(d.impvolver){V.imp.paso=1;render();window.scrollTo(0,0);return;}
+  if(d.impcargar){cargarLista();return;}
+  if(d.borrar){borrar(Number(d.borrar));return;}
+
+  /* --- configuración --- */
+  if(d.quitar){
+    var arr=lista(d.quitar).slice();
+    var it=arr[Number(d.i)];
+    var nom=typeof it==="string"?it:it.n;
+    var usos=d.campo?usoDeValor(d.campo,nom):0;
+    if(usos>0){toast('"'+nom+'" está usado en '+plural(usos,"registro","registros")+'. '
+      +"Cambialos primero.");return;}
+    if(!confirm('¿Sacar "'+nom+'" de la lista?'))return;
+    arr.splice(Number(d.i),1);
+    S.cfg[d.quitar]=arr; guardarCfg(); render(); return;
+  }
+  if(d.agregar){
+    var inp=document.getElementById("add-"+d.agregar);
+    var v=inp?inp.value.trim():"";
+    if(!v){toast("Escribí el nombre primero");return;}
+    var actual=lista(d.agregar).slice();
+    var ya=actual.some(function(x){
+      return (typeof x==="string"?x:x.n).toLowerCase()===v.toLowerCase();});
+    if(ya){toast("Ya está en la lista");return;}
+    if(d.agregar==="tipos"){
+      var chk=document.getElementById("add-tipos-ag");
+      actual.push({n:v, ag:!!(chk&&chk.checked)});
+    }else actual.push(v);
+    S.cfg[d.agregar]=actual; guardarCfg(); render();
+    toast('"'+v+'" agregado'); return;
+  }
+
+  if(!e)return;
+  if(d.acc){leerCampos(e);aplicar(e,d.acc);return;}
+  if(d.temp){leerCampos(e);
+    e.temp = e.temp===d.temp ? "" : d.temp;
+    guardar(e);render();return;}
+  if(d.est){leerCampos(e);
+    if(e.es!==d.est){e.es=d.est;e.log.push({f:hoyISO(),t:"Estado → "+e.es,d:"",k:"e"});}
+    guardar(e);render();return;}
+  if(d.dias!=null){var n=Number(d.dias);
+    leerCampos(e); e.pxf=n<0?"":masDias(n); guardar(e);render();return;}
+  if(d.paso){
+    leerCampos(e);
+    if(!e.alta)e.alta={};
+    if(e.alta[d.paso]){delete e.alta[d.paso];}
+    else{e.alta[d.paso]=hoyISO();
+      e.log.push({f:hoyISO(),t:"Alta: "+d.paso,d:"",k:"a2"});}
+    guardar(e);render();return;}
+  if(d.addac){
+    leerCampos(e);
+    if(!e.ac)e.ac=[];
+    e.ac.push({co:"",ra:"",fp:"",pc:"",det:""});
+    guardar(e);render();return;}
+  if(d.quitarac){
+    leerCampos(e);
+    var i=Number(d.quitarac);
+    var a=e.ac[i];
+    if(!confirm("¿Quitar el acuerdo "+((a.co||"sin compañía")+" · "+(a.ra||"sin rama"))+"?"))return;
+    e.ac.splice(i,1); guardar(e);render();return;}
+  if(d.nota){
+    var ta=document.getElementById("nota");
+    var v2=ta?ta.value.trim():"";
+    if(!v2){toast("Escribí algo primero");return;}
+    leerCampos(e);
+    e.log.push({f:hoyISO(),t:"Nota",d:v2,k:"n"});
+    guardar(e);render();toast("Nota guardada");return;}
+});
+
+document.addEventListener("change",function(ev){
+  var id=ev.target.id, e=V.abierta!=null?porId(V.abierta):null;
+
+  if(V.imp){
+    if(ev.target.dataset&&ev.target.dataset.mapcol!=null){
+      V.imp.an.mapa[Number(ev.target.dataset.mapcol)]=ev.target.value;
+      if(V.imp.an.mapa.indexOf("n")<0){toast("Alguna columna tiene que ser el nombre");
+        V.imp.an.mapa[Number(ev.target.dataset.mapcol)]="n";}
+      render();return;
+    }
+    if(id==="imp-cab"){
+      V.imp.an.cab=!!ev.target.checked;
+      V.imp.an.mapa=mapearColumnas(V.imp.an);
+      render();return;
+    }
+    if(id==="imp-txt"){V.imp.txt=ev.target.value;return;}
+    if(id==="imp-tipo"){V.imp.tipo=ev.target.value;return;}
+    if(id==="imp-origen"){V.imp.origen=ev.target.value.trim();return;}
+  }
+  if(id==="f-tipo"){V.fTipo=ev.target.value;render();return;}
+  if(id==="f-estado"){V.fEstado=ev.target.value;render();return;}
+  if(id==="f-rama"){V.fRama=ev.target.value;render();return;}
+  if(id==="f-comp"){V.fComp=ev.target.value;render();return;}
+  if(id==="dd"){S.cfg.dias_dormido=Math.max(1,num(ev.target.value,30));guardarCfg();return;}
+  if(id==="da"){S.cfg.dias_alta=Math.max(1,num(ev.target.value,15));guardarCfg();return;}
+
+  if(!e)return;
+  if(ev.target.dataset&&ev.target.dataset.ac!=null){
+    leerCampos(e);guardar(e);
+    if(/_co$|_ra$|_fp$/.test(id))setTimeout(render,0);   // cambia el título o los campos
+    return;
+  }
+  if(id==="c_ti"){leerCampos(e);guardar(e);setTimeout(render,0);return;}
+  if(["px","pxf","c_p1"].indexOf(id)>=0){leerCampos(e);guardar(e);
+    if(id!=="px")setTimeout(render,0);return;}
+  if(id&&id.indexOf("c_")===0){leerCampos(e);guardar(e);setTimeout(render,0);return;}
+});
+
+document.addEventListener("input",function(ev){
+  if(ev.target.id==="q"){V.q=ev.target.value;refrescarLista();}
+});
+
+/* ---------- login, carga y sincronización ---------- */
+function pantalla(html){ROOT.innerHTML='<div class="gate"><div class="gate-in">'+html+'</div></div>';}
+
+function pantallaLogin(msg){
+  pantalla('<h1 class="gate-t">ACL · Red de socios</h1>'
+   +'<p class="gate-p">Seguimiento de agencias, dateros y vendedores que te traen pólizas.</p>'
+   +'<div class="fld"><label for="mail">Mail</label>'
+   +'<input id="mail" type="email" inputmode="email" autocomplete="username" '
+   +'autocapitalize="off" spellcheck="false" placeholder="vos@mail.com"></div>'
+   +'<div class="fld"><label for="pass">Contraseña</label>'
+   +'<input id="pass" type="password" autocomplete="current-password" placeholder="••••••••"></div>'
+   +'<button class="act" id="entrar">Entrar</button>'
+   +(msg?'<p class="gate-e">'+esc(msg)+'</p>':'')
+   +'<p class="gate-n">Los usuarios se crean desde el panel de Supabase, en '
+   +'Authentication → Users, con Auto Confirm marcado.</p>');
+
+  var b=document.getElementById("entrar");
+  function intentar(){
+    var m=(document.getElementById("mail").value||"").trim();
+    var p=document.getElementById("pass").value||"";
+    if(!m||m.indexOf("@")<0){pantallaLogin("Escribí tu mail completo.");return;}
+    if(!p){pantallaLogin("Te falta la contraseña.");return;}
+    b.textContent="Entrando…"; b.disabled=true;
+    sb.auth.signInWithPassword({email:m,password:p}).then(function(r){
+      if(r.error)pantallaLogin(mensajeError(r.error));
+    }).catch(function(){pantallaLogin("No se pudo conectar. Revisá que tengas internet.");});
+  }
+  b.addEventListener("click",intentar);
+  document.getElementById("pass").addEventListener("keydown",function(ev){
+    if(ev.key==="Enter")intentar();
+  });
+}
+function mensajeError(err){
+  var t=((err&&err.message)||"").toLowerCase();
+  if(t.indexOf("invalid login")>=0)      return "Mail o contraseña incorrectos.";
+  if(t.indexOf("email not confirmed")>=0)return "El usuario existe pero está sin confirmar. "
+    +"En Supabase → Authentication → Users, editalo y marcá Auto Confirm.";
+  if(t.indexOf("rate limit")>=0||t.indexOf("too many")>=0)
+    return "Demasiados intentos seguidos. Esperá un minuto y probá de nuevo.";
+  return (err&&err.message)||"No se pudo entrar.";
+}
+
+function normalizarSocio(d){
+  d.ac=Array.isArray(d.ac)?d.ac:[];
+  d.alta=(d.alta&&typeof d.alta==="object")?d.alta:{};
+  d.log=Array.isArray(d.log)?d.log:[];
+  ["n","ti","lo","dir","de","ca","tel","wa","em","temp","es","px","pxf",
+   "cuit","vol","aseg","cond","p1","ob"].forEach(function(k){
+    if(d[k]==null)d[k]="";
+  });
+  if(!d.es)d.es="Identificado";
+  return d;
+}
+var cargando=false;
+function cargar(){
+  if(cargando)return Promise.resolve();
+  cargando=true;
+  pantalla('<h1 class="gate-t">Cargando…</h1><p class="gate-p">Trayendo los socios.</p>');
+  return Promise.all([
+    sb.from("socios").select("id,datos").order("id"),
+    sb.from("config").select("k,v")
+  ]).then(function(res){
+    if(res[0].error)throw res[0].error;
+    S.socios=(res[0].data||[]).map(function(r){var d=r.datos||{};d.id=r.id;return normalizarSocio(d);});
+    (res[1].data||[]).forEach(function(c){S.cfg[c.k]=c.v;});
+    cachear(); cargando=false; render(); escuchar();
+  }).catch(function(err){
+    cargando=false;
+    var raw=null; try{raw=localStorage.getItem(CACHE);}catch(x){}
+    if(raw){
+      try{
+        var g=JSON.parse(raw);
+        S.socios=(g.socios||[]).map(normalizarSocio);
+        S.cfg=g.cfg||S.cfg;
+        render(); marcar("err");
+        toast("Sin conexión: estás viendo la última copia guardada");
+        return;
+      }catch(y){}
+    }
+    pantalla('<h1 class="gate-t">No se pudo conectar</h1>'
+      +'<p class="gate-p">'+esc((err&&err.message)||"Revisá la conexión y recargá.")+'</p>'
+      +'<p class="gate-n">Si dice algo de "permission denied", falta agregar tu mail '
+      +'en la tabla <b>permitidos</b> de Supabase.</p>');
+  });
+}
+
+function escuchar(){
+  sb.channel("acl")
+    .on("postgres_changes",{event:"*",schema:"public",table:"socios"},function(p){
+      if(p.eventType==="DELETE"){
+        var vid=p.old&&p.old.id;
+        if(vid!=null){S.socios=S.socios.filter(function(x){return x.id!==vid;});cachear();render();}
+        return;
+      }
+      var fila=p.new; if(!fila||!fila.datos)return;
+      if(Date.now()-(ultimaEscritura[fila.id]||0)<4000)return;  // eco de mi propia escritura
+      var d=normalizarSocio(fila.datos); d.id=fila.id;
+      var i=-1; for(var k=0;k<S.socios.length;k++)if(S.socios[k].id===fila.id){i=k;break;}
+      if(i<0)S.socios.push(d); else S.socios[i]=d;
+      cachear(); render();
+    })
+    .on("postgres_changes",{event:"*",schema:"public",table:"config"},function(p){
+      if(p.new&&p.new.k){S.cfg[p.new.k]=p.new.v;cachear();render();}
+    })
+    .subscribe();
+}
+
+function rolDelJWT(k){
+  var p=k.split("."); if(p.length!==3)return "";
+  try{
+    var b=p[1].replace(/-/g,"+").replace(/_/g,"/");
+    while(b.length%4)b+="=";
+    return (JSON.parse(atob(b)).role)||"";
+  }catch(x){return "";}
+}
+function pantallaConfig(msg){
+  pantalla('<h1 class="gate-t">Configurar la conexión</h1>'
+   +'<p class="gate-p">Pegá los dos datos de tu proyecto de Supabase. Están en '
+   +'<b>Settings → API Keys</b>. Sirve la <b>Publishable key</b> (pestaña API Keys) '
+   +'o la vieja <b>anon public</b> (pestaña Legacy API Keys): son equivalentes.</p>'
+   +'<div class="fld"><label for="cu">Project URL</label>'
+   +'<input id="cu" type="url" placeholder="https://xxxx.supabase.co" autocapitalize="off" spellcheck="false"></div>'
+   +'<div class="fld"><label for="ck">Publishable key — o anon public</label>'
+   +'<textarea id="ck" placeholder="sb_publishable_... o eyJ..." autocapitalize="off" spellcheck="false"></textarea></div>'
+   +'<button class="act" id="probar">Probar la conexión</button>'
+   +(msg?'<p class="gate-e">'+esc(msg)+'</p>':'')
+   +'<p class="gate-n">La <b>service_role</b> / <b>secret key</b> no va acá: esa da acceso total '
+   +'y nunca tiene que estar en una página web.</p>');
+
+  document.getElementById("probar").addEventListener("click",function(){
+    var b=this;
+    var u=(document.getElementById("cu").value||"").trim().replace(/\/+$/,"");
+    var k=(document.getElementById("ck").value||"").trim();
+    if(!/^https:\/\/.+\.supabase\.co$/.test(u)){
+      pantallaConfig("La Project URL tiene que verse así: https://algo.supabase.co");return;}
+    if(k.indexOf("service_role")>=0||k.indexOf("sb_secret_")===0||rolDelJWT(k)==="service_role"){
+      pantallaConfig("Esa es la clave secreta (service_role). Nunca va en una página web. "
+        +"Volvé y copiá la Publishable key, o la anon public de la pestaña Legacy.");return;}
+    if(k.length<20){pantallaConfig("La clave parece incompleta. Copiala entera.");return;}
+    b.textContent="Probando…"; b.disabled=true;
+    fetch(u+"/rest/v1/",{headers:{apikey:k}}).then(function(r){
+      if(r.status===401||r.status===403){pantallaConfig("La clave no es válida para ese proyecto.");return;}
+      if(!r.ok&&r.status!==404){pantallaConfig("El proyecto no respondió (código "+r.status+"). Revisá la URL.");return;}
+      try{localStorage.setItem(CFG,JSON.stringify({url:u,key:k}));}catch(x){}
+      pantalla('<h1 class="gate-t">Conectado</h1>'
+        +'<p class="gate-p">Ya funciona en este celular. Para que funcione en cualquier otro '
+        +'sin volver a configurarlo, bajá el archivo con la configuración adentro y subilo '
+        +'a tu hosting reemplazando el actual.</p>'
+        +'<button class="act" id="bajar">Bajar el archivo configurado</button>'
+        +'<button class="salir" id="seguir">Seguir sin bajarlo</button>');
+      document.getElementById("bajar").addEventListener("click",function(){
+        var out=PAGINA_SRC.replace('"PEGAR_AQUI_LA_PROJECT_URL"',JSON.stringify(u))
+                          .replace('"PEGAR_AQUI_LA_CLAVE_PUBLISHABLE"',JSON.stringify(k));
+        var bl=new Blob([out],{type:"text/html;charset=utf-8"});
+        var a=document.createElement("a");a.href=URL.createObjectURL(bl);
+        a.download="index.html";document.body.appendChild(a);a.click();
+        setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},1000);
+      });
+      document.getElementById("seguir").addEventListener("click",function(){location.reload();});
+    }).catch(function(){pantallaConfig("No se pudo conectar. Revisá la URL y que tengas internet.");});
+  });
+}
+
+document.addEventListener("click",function(ev){
+  if(ev.target.id==="salir"&&sb){sb.auth.signOut().then(function(){location.reload();});}
+  if(ev.target.id==="clave"&&sb){
+    var n=prompt("Nueva contraseña (mínimo 6 caracteres)");
+    if(!n)return;
+    if(n.length<6){toast("Tiene que tener al menos 6 caracteres");return;}
+    sb.auth.updateUser({password:n}).then(function(r){
+      toast(r.error?("No se pudo cambiar: "+r.error.message):"Contraseña cambiada");
+    });
+  }
+});
+
+function arrancar(){
+  if(SUPABASE_URL.indexOf("PEGAR_AQUI")===0||SUPABASE_KEY.indexOf("PEGAR_AQUI")===0){
+    pantallaConfig(""); return;
+  }
+  if(!window.supabase){
+    pantalla('<h1 class="gate-t">No cargó una librería</h1>'
+     +'<p class="gate-p">La página necesita conexión la primera vez que la abrís. '
+     +'Conectate y recargá; después funciona aunque no tengas señal.</p>');
+    return;
+  }
+  sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,
+      {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+  sb.auth.onAuthStateChange(function(evt,ses){
+    var antes=!!sesion; sesion=ses;
+    miEmail=ses&&ses.user?ses.user.email:"";
+    if(ses&&!antes&&!cargando)cargar();
+    if(!ses&&antes)pantallaLogin("");
+  });
+  sb.auth.getSession().then(function(r){
+    sesion=r.data.session;
+    if(sesion){miEmail=sesion.user.email;cargar();}
+    else pantallaLogin("");
+  });
+}
+
+/* ---------- PWA: instalarla y que abra sin señal ---------- */
+if("serviceWorker" in navigator){
+  window.addEventListener("load",function(){
+    navigator.serviceWorker.register("./sw.js").catch(function(){});
+  });
+}
+
+arrancar();
+})();
+</script>
+</body>
+</html>
