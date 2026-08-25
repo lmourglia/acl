@@ -281,6 +281,7 @@ main{flex:1;padding:14px 12px calc(86px + env(safe-area-inset-bottom))}
   font-variant-numeric:tabular-nums;padding-top:1px}
 .et{flex:1;min-width:0}
 .et small{display:block;color:var(--muted);font-size:13px;margin-top:2px;overflow-wrap:anywhere}
+.desh{flex:none;font-size:12px;font-weight:700;color:var(--critical);padding:2px 3px 2px 10px}
 .danger{width:100%;min-height:44px;border-radius:11px;color:var(--critical);font-size:13.5px;
   font-weight:600;box-shadow:inset 0 0 0 1px var(--critical-soft);background:var(--critical-soft)}
 
@@ -625,7 +626,7 @@ function sociosTocados(ini,fin){
 }
 
 /* ---------- render ---------- */
-var renderizando=false, renderPendiente=false;
+var renderizando=false, renderPendiente=false, claveSheet=null;
 function render(){
   if(renderizando){renderPendiente=true;return;}
   renderizando=true;
@@ -633,7 +634,17 @@ function render(){
   // en medio del innerHTML y el navegador tira NotFoundError
   var ae=document.activeElement;
   if(ae&&(ae.tagName==="INPUT"||ae.tagName==="TEXTAREA"))ae.blur();
+  // la ficha (.sheet) tiene su propio scroll: al reconstruir todo el HTML se
+  // pierde, así que lo guardamos y lo devolvemos si sigue siendo la misma
+  // ficha (o el mismo paso de la carga por lista) — si no, arranca en 0.
+  var hojaAntes=document.querySelector(".sheet");
+  var scrollAntes=hojaAntes?hojaAntes.scrollTop:0;
+  var claveAntes=claveSheet;
+  var claveAhora=V.imp?("imp"+V.imp.paso):(V.abierta!=null?("f"+V.abierta):null);
   try{ pintar(); centrarActivos(); } finally { renderizando=false; }
+  var hojaAhora=document.querySelector(".sheet");
+  if(hojaAhora&&claveAhora&&claveAhora===claveAntes)hojaAhora.scrollTop=scrollAntes;
+  claveSheet=claveAhora;
   if(renderPendiente){renderPendiente=false;render();}
 }
 function centrarActivos(){
@@ -1440,10 +1451,13 @@ function ficha(e){
   /* 12. Historial */
   h+='<div class="blk"><div class="blk-h">Historial'
    +'<span class="cnt">'+(e.log||[]).length+'</span></div>'
-   +((e.log&&e.log.length)?'<div class="tl">'+e.log.slice().reverse().map(function(l){
+   +((e.log&&e.log.length)?'<div class="tl">'+e.log.slice().reverse().map(function(l,i){
       return '<div class="ev"><span class="ed">'+dmy(l.f)+'</span>'
-       +'<span class="et">'+esc(l.t)+(l.d?'<small>'+esc(l.d)+'</small>':'')+'</span></div>';
+       +'<span class="et">'+esc(l.t)+(l.d?'<small>'+esc(l.d)+'</small>':'')+'</span>'
+       +(i===0?'<button class="desh" data-deslog="1">Deshacer</button>':'')+'</div>';
      }).join("")+'</div>'
+     +'<p class="note">Deshacer solo está disponible para el último registro, así se '
+     +'puede corregir un toque equivocado sin tocar el resto del historial.</p>'
      :'<p class="note" style="margin:0">Todavía no registraste nada con este socio.</p>')
    +'</div>';
 
@@ -1595,7 +1609,7 @@ document.addEventListener("click",function(ev){
   var t=ev.target.closest("[data-tab],[data-open],[data-close],[data-acc],[data-est],"
     +"[data-dias],[data-nota],[data-add],[data-csv],[data-vermas],[data-temp],[data-paso],"
     +"[data-addac],[data-quitarac],[data-borrar],[data-quitar],[data-agregar],[data-per],[data-limpiar],"
-    +"[data-imp],[data-impcerrar],[data-imprevisar],[data-impvolver],[data-impcargar]");
+    +"[data-imp],[data-impcerrar],[data-imprevisar],[data-impvolver],[data-impcargar],[data-deslog]");
   if(!t)return;
   var e=V.abierta!=null?porId(V.abierta):null;
   var d=t.dataset;
@@ -1682,6 +1696,19 @@ document.addEventListener("click",function(ev){
     var a=e.ac[i];
     if(!confirm("¿Quitar el acuerdo "+((a.co||"sin compañía")+" · "+(a.ra||"sin rama"))+"?"))return;
     e.ac.splice(i,1); guardar(e);render();return;}
+  if(d.deslog){
+    if(!e.log||!e.log.length)return;
+    var ult=e.log[e.log.length-1];
+    if(!confirm('¿Deshacer "'+ult.t+'"'+(ult.d?" ("+ult.d+")":"")+'? No se puede volver atrás.'))return;
+    leerCampos(e);
+    e.log.pop();
+    var eraLaActivacion = e.p1 && e.p1===ult.f && ult.k==="p";
+    if(eraLaActivacion)e.p1="";
+    guardar(e);render();
+    toast("Registro deshecho"+(eraLaActivacion
+      ?" · ya no cuenta como primera póliza. Revisá el estado, puede que haya que corregirlo también."
+      :""));
+    return;}
   if(d.nota){
     var ta=document.getElementById("nota");
     var v2=ta?ta.value.trim():"";
